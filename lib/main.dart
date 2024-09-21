@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages/HomePage.dart';
+import 'pages/ProfilePage.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,8 +11,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Convertor',
-      home: Home(),
+      title: 'Remercee',
+      home: Profile(),
     );
   }
 }
