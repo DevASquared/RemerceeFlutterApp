@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'pages/RatingPage.dart';
 import 'pages/ProfilePage.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Remercee',
-      home: Profile(),
+      home: Rating(),
     );
   }
 }
