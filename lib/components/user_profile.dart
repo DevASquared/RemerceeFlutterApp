@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 class UserProfile extends StatefulWidget {
@@ -15,12 +13,12 @@ class UserProfile extends StatefulWidget {
     required this.place,
     required this.since,
   }) : super(key: key);
+
   @override
-  State<UserProfile> createState() => _userProfileState();
+  State<UserProfile> createState() => _UserProfileState();
 }
 
-class _userProfileState extends State<UserProfile> {
-
+class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     final imageUrl = widget.imageUrl;
@@ -36,7 +34,7 @@ class _userProfileState extends State<UserProfile> {
             radius: 50,
             backgroundImage: NetworkImage(imageUrl),
           ),
-          Spacer(),
+          const Spacer(),
           Text(
             name,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
