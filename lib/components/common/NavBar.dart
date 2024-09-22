@@ -1,14 +1,14 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:remercee/utils/colors.dart';
 
 class NavBar extends StatefulWidget {
   final int index;
+  final void Function(dynamic index) event;
 
   const NavBar({
     required this.index,
     Key? key,
+    required this.event,
   }) : super(key: key);
 
   @override
@@ -63,7 +63,7 @@ class _NavBarState extends State<NavBar> {
                       setState(() {
                         pos = changePos(0, width, iconSize, circleSize);
                         selectedIndex = 0; // Mets à jour selectedIndex
-                        log(selectedIndex.toString());
+                        widget.event(0);
                       });
                     },
                   ),
@@ -78,7 +78,7 @@ class _NavBarState extends State<NavBar> {
                       setState(() {
                         pos = changePos(1, width, iconSize, circleSize);
                         selectedIndex = 1; // Mets à jour selectedIndex
-                        log(selectedIndex.toString());
+                        widget.event(1);
                       });
                     },
                   ),
@@ -93,7 +93,7 @@ class _NavBarState extends State<NavBar> {
                       setState(() {
                         pos = changePos(2, width, iconSize, circleSize);
                         selectedIndex = 2; // Mets à jour selectedIndex
-                        log(selectedIndex.toString());
+                        widget.event(2);
                       });
                     },
                   ),

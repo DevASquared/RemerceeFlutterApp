@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remercee/pages/subpages/rating_page.dart';
+import 'package:remercee/pages/subpages/scan_page.dart';
 import 'package:remercee/pages/subpages/signin.dart';
 import 'package:remercee/pages/subpages/signup.dart';
 import 'package:remercee/utils/constants.dart';
@@ -17,31 +18,27 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Widget actualSubPage = const Spacer();
 
+  void changeAuth(int index) {
+    setState(() {
+      if (index == 0) {
+        actualSubPage = Signup(event: () => changeAuth(1));
+      } else {
+        actualSubPage = Signin(event: () => changeAuth(0));
+      }
+    });
+  }
+
   void changePage(int index) {
-    if (index == 0) {
-      setState(() {
-        actualSubPage = Signup(event: () {
-          changePage(1);
-        });
-      });
-    } else {
-      setState(() {
-        actualSubPage = Signin(event: () {
-          changePage(0);
-        });
-      });
-    }
-    // return index == 0
-    //     ? Signup(event: () {
-    //         setState(() {
-    //           changePage(0);
-    //         });
-    //       })
-    //     : Signin(event: () {
-    //         setState(() {
-    //           changePage(0);
-    //         });
-    //       });
+    setState(() {
+      switch(index) {
+        case 0:
+          actualSubPage = const Center(child: Text("Under Construction", style: TextStyle(fontSize: 25)));
+          break;
+        case 1:
+          actualSubPage = const ScanPage();
+          break;
+      }
+    });
   }
 
   @override
@@ -51,7 +48,7 @@ class _HomePageState extends State<HomePage> {
         if (value) {
           actualSubPage = const RatingPage();
         } else {
-          changePage(1);
+          changeAuth(1);
         }
       });
     });
@@ -73,7 +70,9 @@ class _HomePageState extends State<HomePage> {
             children: [
               const Header(),
               actualSubPage,
-              const NavBar(index: 2),
+              NavBar(index: 2, event: (index) {
+                changePage(index);
+              }),
             ],
           ),
         ),
