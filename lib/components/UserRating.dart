@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -12,10 +10,10 @@ class UserRating extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<UserRating> createState() => _userRatingState();
+  State<UserRating> createState() => _UserRatingState();
 }
 
-class _userRatingState extends State<UserRating> {
+class _UserRatingState extends State<UserRating> {
   @override
   Widget build(BuildContext context) {
     var rate = widget.rate;
@@ -28,18 +26,18 @@ class _userRatingState extends State<UserRating> {
         maxRating: 5,
         initialRating: rate,
         allowHalfRating: true,
-        itemSize: MediaQuery.of(context).size.width * 0.16,
+        itemSize: MediaQuery.of(context).size.width * 0.125,
         ratingWidget: RatingWidget(
-            full: Icon(
-              Icons.star,
+            full: const Icon(
+              Icons.star_rounded,
               color: Color(0xFFEA2831),
             ),
-            half: Icon(
-              Icons.star_half,
+            half: const Icon(
+              Icons.star_half_rounded,
               color: Color(0xFFEA2831),
             ),
-            empty: Icon(
-              Icons.star_border,
+            empty: const Icon(
+              Icons.star_border_rounded,
               color: Color(0xFFEA2831),
             )),
         onRatingUpdate: (double value) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../components/NavBar.dart';
-import '../components/UserProfile.dart';
-import '../components/RatingsData.dart';
+import '../../components/common/NavBar.dart';
+import '../../components/user_profile.dart';
+import '../../components/RatingsData.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key});
@@ -36,7 +36,7 @@ class _ProfileState extends State<Profile> {
             UserProfile(
               imageUrl: userImageUrl,
               name: userName,
-              role: userRole,
+              place: userRole,
               since: userSince,
             ),
             const SizedBox(height: 40),
