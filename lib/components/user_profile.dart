@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 class UserProfile extends StatefulWidget {
   final String imageUrl;
   final String name;
-  final String role;
+  final String place;
   final String since;
 
   const UserProfile({
     Key? key,
     required this.imageUrl,
     required this.name,
-    required this.role,
+    required this.place,
     required this.since,
   }) : super(key: key);
   @override
@@ -25,17 +25,18 @@ class _userProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     final imageUrl = widget.imageUrl;
     final name = widget.name;
-    final role = widget.role;
+    final role = widget.place;
     final since = widget.since;
 
-    return Container(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height / (100 / 25),
       child: Column(
         children: [
           CircleAvatar(
             radius: 50,
             backgroundImage: NetworkImage(imageUrl),
           ),
-          const SizedBox(height: 10),
+          Spacer(),
           Text(
             name,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -44,7 +45,7 @@ class _userProfileState extends State<UserProfile> {
             role,
             style: const TextStyle(fontSize: 16, color: Colors.grey),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 2),
           Text(
             since,
             style: const TextStyle(fontSize: 14, color: Colors.grey),
