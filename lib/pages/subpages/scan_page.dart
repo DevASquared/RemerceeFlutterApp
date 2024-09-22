@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:universal_html/html.dart' as html;
 
 class ScanPage extends StatefulWidget {
@@ -12,96 +14,42 @@ class ScanPage extends StatefulWidget {
   State<ScanPage> createState() => _ScanPageState();
 }
 
-class _ScanPageState extends State<ScanPage> {
-  List<CameraDescription>? _cameras;
-  CameraController? controller;
-  var _subscription;
-  Future<void>? _initializeControllerFuture;
+class _ScanPageState extends State<ScanPage> with WidgetsBindingObserver {
+  Barcode? _barcode;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsFlutterBinding.ensureInitialized();
-    _initializeControllerFuture = loadCamera(); // Initialisation du Future
-  }
-
-  Future<void> loadCamera() async {
-    try {
-      _cameras = await availableCameras();
-      controller = CameraController(_cameras![0], ResolutionPreset.max, enableAudio: false);
-      await controller!.initialize(); // Utilisation de await pour attendre l'initialisation
-    } catch (e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            log(e.description.toString());
-            // Gérer les erreurs d'accès à la caméra
-            break;
-          default:
-            log(e.description.toString());
-            // Gérer d'autres erreurs
-            break;
-        }
-      }
+  Widget _buildBarcode(Barcode? value) {
+    if (value == null) {
+      return const Text(
+        'Scan something!',
+        overflow: TextOverflow.fade,
+        style: TextStyle(color: Colors.white),
+      );
     }
+
+    return Text(
+      value.displayValue ?? 'No display value.',
+      overflow: TextOverflow.fade,
+      style: const TextStyle(color: Colors.white),
+    );
   }
 
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
+  void _handleBarcode(BarcodeCapture barcodes) {
+    if (mounted) {
+      setState(() {
+        _barcode = barcodes.barcodes.firstOrNull;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           width: MediaQuery.of(context).size.width / 1.5,
           height: MediaQuery.of(context).size.width / 1.5,
-          child: FutureBuilder<void>(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (controller != null && controller!.value.isInitialized) {
-                  return Stack(children: [
-                    CameraPreview(controller!),
-                  ]);
-                } else {
-                  return Center(
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Caméra non disponible',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        ElevatedButton(
-                          child: const Text("Request permission"),
-                          onPressed: () async {
-                            final perm = await html.window.navigator.permissions?.query({"name": "camera"});
-                            if (perm?.state == "denied") {
-                              return;
-                            }
-                            final stream = await html.window.navigator.getUserMedia(video: true, audio: false);
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text(
-                    'Erreur: ${snapshot.error}',
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
+          child: MobileScanner(
+            onDetect: _handleBarcode,
           ),
         ),
       ],

@@ -37,6 +37,9 @@ class _HomePageState extends State<HomePage> {
         case 1:
           actualSubPage = const ScanPage();
           break;
+        case 2:
+          changeAuth(1);
+          break;
       }
     });
   }
