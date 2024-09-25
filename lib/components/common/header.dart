@@ -4,9 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../utils/constants.dart';
 
 class Header extends StatelessWidget {
-  final void Function() event;
+  final void Function() logout;
+  final void Function() showQrCode;
 
-  const Header({Key? key, required this.event}) : super(key: key);
+  const Header({Key? key, required this.logout, required this.showQrCode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,12 @@ class Header extends StatelessWidget {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.15,
+            child: IconButton(
+              onPressed: () {
+                showQrCode();
+              },
+              icon: const Icon(Icons.qr_code_2_rounded),
+            ),
           ),
           Text(
             "REMERCEE",
@@ -32,7 +39,7 @@ class Header extends StatelessWidget {
                 Constants.getPreferences().then(
                   (value) {
                     value.setBool("connected", false);
-                    event();
+                    logout();
                   },
                 );
               },

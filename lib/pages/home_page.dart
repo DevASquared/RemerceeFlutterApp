@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remercee/pages/subpages/profile_page.dart';
+import 'package:remercee/pages/subpages/qr_code_page.dart';
 import 'package:remercee/pages/subpages/rating_page.dart';
 import 'package:remercee/pages/subpages/scan_page.dart';
 import 'package:remercee/pages/subpages/signin.dart';
@@ -69,6 +70,8 @@ class _HomePageState extends State<HomePage> {
           case 2:
             changeAuth(1);
             break;
+          case 5:
+            actualSubPage = const QrCodePage();
         }
         isNavigating = false;
       });
@@ -114,7 +117,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Header(event: () => changeAuth(0)),
+              Header(logout: () => changeAuth(0), showQrCode: () => changePage(5)),
               actualSubPage,
               NavBar(
                 index: 1,
