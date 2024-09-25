@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:remercee/components/common/NavBar.dart';
-import 'package:remercee/components/UserRating.dart';
+import 'package:remercee/components/user_rating.dart';
 import 'package:remercee/components/common/header.dart';
 import 'package:remercee/utils/api_controller.dart';
 import 'package:remercee/utils/colors.dart';
@@ -24,7 +24,7 @@ class _RatingPageState extends State<RatingPage> {
   String userImageUrl =
       "https://media.istockphoto.com/id/1196391449/fr/photo/verticale-de-femme-africaine.jpg?s=612x612&w=0&k=20&c=Jz9UR3Qg0d6oe6-ETeK5zu8DhZXUB-YVod6EKEnH-tQ=";
   String userSince = "Inscrite en 2021";
-  double rate = 0;
+  double rate = 3;
   bool error = false;
 
   @override
@@ -50,11 +50,6 @@ class _RatingPageState extends State<RatingPage> {
       userImageUrl = user.imageUrl;
       userSince = user.since.year.toString();
     });
-    /*int i;
-        for(i = 0; i < user.notes.length; i++) {
-          rate += user.notes[i];
-        }
-        rate /= i;*/
   }
 
   @override
@@ -65,8 +60,8 @@ class _RatingPageState extends State<RatingPage> {
       child: error
           ? Column(
               children: [
-                Spacer(),
-                Text(
+                const Spacer(),
+                const Text(
                   "Une erreur est parvenue !",
                   style: TextStyle(
                     fontSize: 24,
@@ -74,7 +69,7 @@ class _RatingPageState extends State<RatingPage> {
                     color: Colors.black,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.75,
                   height: MediaQuery.of(context).size.height * 0.065, // Prend toute la largeur
@@ -95,7 +90,7 @@ class _RatingPageState extends State<RatingPage> {
                     ),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
               ],
             )
           : Column(
@@ -113,7 +108,7 @@ class _RatingPageState extends State<RatingPage> {
                     children: [
                       Text(
                         userName.isNotEmpty
-                            ? "Comment noteriez-vous $userName"
+                            ? "Comment noteriez-vous $userName ?"
                             : "Comment noteriez-vous l'utilisateur ?", // Affiche un message générique si userName est vide
                         style: const TextStyle(
                           fontWeight: FontWeight.w600,
@@ -122,7 +117,11 @@ class _RatingPageState extends State<RatingPage> {
                         textAlign: TextAlign.center,
                       ),
                       const Spacer(),
-                      const UserRating(rate: 3), // Ajout d'un espacement
+                      UserRating(rate: 3, event: (rate) {
+                        setState(() {
+                          this.rate = rate;
+                        });
+                      }), // Ajout d'un espacement
                     ],
                   ),
                 ),
@@ -133,7 +132,9 @@ class _RatingPageState extends State<RatingPage> {
                   width: MediaQuery.of(context).size.width * 0.75,
                   height: MediaQuery.of(context).size.height * 0.065, // Prend toute la largeur
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      ApiController.rateUser(userName, rate.toString());
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.red,
                     ),

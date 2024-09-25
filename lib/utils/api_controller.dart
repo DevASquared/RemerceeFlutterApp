@@ -28,7 +28,24 @@ class ApiController {
         // notes: user["notes"].toString(),
         since: DateTime.fromMillisecondsSinceEpoch(user["since"]),
       );
+    } else {
+      return User(email: "error", username: "L'utilisateur n'existe pas", /*notes: [],*/ since: DateTime.now());
     }
-    return User(email: "error", username: "L'utilisateur n'existe pas", /*notes: [],*/ since: DateTime.now());
+  }
+
+  static Future<bool> rateUser(username, rate) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    var judge = sharedPreferences.getString("username");
+
+    var result = await http.post(
+      Uri.parse("${url}user/rate"),
+      body: {
+        "username": username.toString(),
+        "rate": rate.toString(),
+        "judge": judge.toString(),
+      },
+    );
+    var jsonResult = json.decode(result.body.toString());
+    return bool.parse(jsonResult["success"].toString());
   }
 }
