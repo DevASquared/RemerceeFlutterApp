@@ -4,9 +4,12 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 class UserRating extends StatefulWidget {
   final double rate;
 
+  final void Function(double rate) event;
+
   const UserRating({
     Key? key,
     required this.rate,
+    required this.event,
   }) : super(key: key);
 
   @override
@@ -42,6 +45,7 @@ class _UserRatingState extends State<UserRating> {
             )),
         onRatingUpdate: (double value) {
           rate = value;
+          widget.event(rate);
         },
       ),
     );
