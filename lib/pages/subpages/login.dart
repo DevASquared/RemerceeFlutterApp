@@ -49,7 +49,7 @@ class _LoginState extends State<Login> {
                     TextFormField(
                       cursorColor: Colors.red, // Couleur du curseur
                       decoration: InputDecoration(
-                        hintText: 'Username', // Utiliser hintText à la place de labelText
+                        hintText: "Nom d'utilisateur", // Utiliser hintText à la place de labelText
                         filled: true,
                         fillColor: const Color(0xFFEEEEEE),
                         border: OutlineInputBorder(
@@ -67,7 +67,7 @@ class _LoginState extends State<Login> {
                     TextFormField(
                       cursorColor: Colors.red, // Couleur du curseur
                       decoration: InputDecoration(
-                        hintText: 'Password', // Utiliser hintText
+                        hintText: 'Mot de passe', // Utiliser hintText
                         filled: true,
                         fillColor: Colors.grey[200],
                         border: OutlineInputBorder(
@@ -119,7 +119,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         child: Text(
-                          'Login',
+                          'Connexion',
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
@@ -137,11 +137,11 @@ class _LoginState extends State<Login> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Don’t have an account? ',
+                                text: "Vous n'avez pas de compte ? " ,
                                 style: TextStyle(fontSize: 18, color: Colors.black.withOpacity(0.5)),
                               ),
                               TextSpan(
-                                text: 'Sign In',
+                                text: "S'inscrire",
                                 style: TextStyle(fontSize: 18, color: AppColors.red, fontWeight: FontWeight.bold),
                               ),
                             ],
