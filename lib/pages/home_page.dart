@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         isNavigating = true;
         Constants.getPreferences().then(
-              (preferences) {
+          (preferences) {
             if (!preferences.containsKey("connected") || preferences.getBool("connected")! == false) {
               if (index == 0) {
                 actualSubPage = Signup(event: () => changeAuth(1));
@@ -43,13 +43,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void changePage(int index) {
-    if (!isNavigating) { // Empêche l'appel multiple à setState
+    if (!isNavigating) {
+      // Empêche l'appel multiple à setState
       setState(() {
         isNavigating = true;
         switch (index) {
           case 0:
-            actualSubPage = const Center(
-                child: Text("Under Construction", style: TextStyle(fontSize: 25)));
+            actualSubPage = const Center(child: Text("Under Construction", style: TextStyle(fontSize: 25)));
             break;
           case 1:
             actualSubPage = ScanPage(event: (username) {
@@ -57,9 +57,10 @@ class _HomePageState extends State<HomePage> {
                 actualSubPage = RatingPage(
                   username: username,
                   onerror: () {
-                    setState(() {
-                      changePage(1);
-                    });
+                    changePage(1);
+                  },
+                  closePage: () {
+                    changePage(1);
                   },
                 );
               });
@@ -84,9 +85,10 @@ class _HomePageState extends State<HomePage> {
               actualSubPage = RatingPage(
                 username: username,
                 onerror: () {
-                  setState(() {
-                    changePage(1);
-                  });
+                  changePage(1);
+                },
+                closePage: () {
+                  changePage(1);
                 },
               );
             });

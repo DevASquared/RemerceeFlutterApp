@@ -22,14 +22,19 @@ class _UserProfileState extends State<UserProfile> {
   @override
   void initState() {
     super.initState();
+    log("Userprofile[25]: Used username : ${widget.username}"); // empty
     ApiController.getUserProfileFromUsername(widget.username).then(
       (user) {
-        setState(() {
-          imageUrl = user.imageUrl.toString();
-          name = user.username;
-          role = user.place;
-          since = user.since.year.toString();
-        });
+        log("Userprofile[28]: Used username : ${widget.username}");
+        log("Userprofile[29]: User username : ${user.username}");
+        if (user.username != "L'utilisateur n'existe pas") {
+          setState(() {
+            name = user.username.toString();
+            imageUrl = user.imageUrl.toString();
+            role = user.place;
+            since = user.since.year.toString();
+          });
+        }
       },
     );
   }

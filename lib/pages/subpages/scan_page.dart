@@ -51,9 +51,9 @@ class _ScanPageState extends State<ScanPage> with WidgetsBindingObserver {
 
   void openRatingPage() {
     if (_barcode?.rawValue != null && _barcode!.rawValue!.isNotEmpty) {
-      log("Open Rating page for : ${_barcode!.rawValue!}");
+      log("Scan_page[54]: Open Rating page for : ${_barcode!.rawValue!}");
       widget.event(_barcode!.rawValue!);
-      controller.stop(); // Désactive le scanner après détection
+      controller.stop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Aucun code valide scanné.")),
@@ -63,7 +63,7 @@ class _ScanPageState extends State<ScanPage> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    controller.dispose(); // Assurez-vous de libérer le contrôleur
+    controller.dispose();
     super.dispose();
   }
 

@@ -11,8 +11,9 @@ import '../../models/user_model.dart';
 class RatingPage extends StatefulWidget {
   final String username;
   final void Function() onerror;
+  final void Function() closePage;
 
-  const RatingPage({super.key, required this.username, required this.onerror});
+  const RatingPage({super.key, required this.username, required this.onerror, required this.closePage});
 
   @override
   State<RatingPage> createState() => _RatingPageState();
@@ -25,10 +26,15 @@ class _RatingPageState extends State<RatingPage> {
   String userSince = "";
   double rate = 3;
   bool error = false;
+  Widget userprofile = const UserProfile(
+    username: "",
+    public: true,
+  );
 
   @override
   void initState() {
     super.initState();
+    log("Rating_page[32]: Used username : ${widget.username}");
     ApiController.getUserProfileFromUsername(widget.username).then(
       (user) {
         if (user.email == "error") {
@@ -36,19 +42,33 @@ class _RatingPageState extends State<RatingPage> {
             error = true;
           });
         } else {
-          setState(() {
-            userName = user.username;
-            userPlace = user.place;
-            userImageUrl = user.imageUrl;
-            userSince = user.since.year.toString();
-          });
+          log("Rating_page[40]: Used username : ${user.username}");
+          if (user.username != "L'utilisateur n'existe pas") {
+            setState(() {
+              userName = user.username;
+              userPlace = user.place;
+              userImageUrl = user.imageUrl;
+              userSince = user.since.year.toString();
+              userprofile = UserProfile(
+                username: userName,
+                public: true,
+              );
+            });
+          }
         }
       },
     );
   }
 
+  Future<User> getData() async {
+    User user = await ApiController.getUserProfileFromUsername(widget.username);
+    return user;
+  }
+
   @override
   Widget build(BuildContext context) {
+    log("Rating_page[62]: On build error : $error"); // false
+    log("Rating_page[63]: On build username : $userName"); // empty
     return SizedBox(
       height: MediaQuery.of(context).size.height / 1.2,
       width: MediaQuery.of(context).size.width / 1.2,
@@ -90,9 +110,22 @@ class _RatingPageState extends State<RatingPage> {
             )
           : Column(
               children: <Widget>[
-                UserProfile(
-                  username: userName.isNotEmpty ? userName : 'Chargement...',
-                  public: true,
+                FutureBuilder<User>(
+                  future: getData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator(); // Affiche un indicateur de chargement pendant le chargement des données
+                    } else if (snapshot.hasError) {
+                      return const Text("Une erreur est survenue");
+                    } else if (snapshot.hasData && snapshot.data != null) {
+                      return UserProfile(
+                        username: snapshot.data!.username,
+                        public: true,
+                      );
+                    } else {
+                      return const Text("Utilisateur non trouvé");
+                    }
+                  },
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.271 / 2,
@@ -113,12 +146,11 @@ class _RatingPageState extends State<RatingPage> {
                       ),
                       const Spacer(),
                       UserRating(
-                          rate: 3,
-                          event: (rate) {
-                            setState(() {
-                              this.rate = rate;
-                            });
-                          }), // Ajout d'un espacement
+                        rate: 3,
+                        event: (rate) {
+                          this.rate = rate;
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -131,6 +163,7 @@ class _RatingPageState extends State<RatingPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       ApiController.rateUser(userName, rate.toString());
+                      widget.closePage();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.red,

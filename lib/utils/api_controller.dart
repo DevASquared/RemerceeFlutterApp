@@ -12,6 +12,8 @@ class ApiController {
   static Future<User> getUserProfileFromUsername(username) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     username = (username == null) ? sharedPreferences.getString("username") : username;
+    log("ApiController[15]: Username used in API call: $username");
+
 
     var result = await http.get(Uri.parse("${url}user?username=$username"));
     var jsonResult = json.decode(result.body.toString());
