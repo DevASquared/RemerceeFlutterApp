@@ -6,8 +6,8 @@ import 'package:remercee/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiController {
-  // static const String url = "https://remerceeapi-yutru3qk.b4a.run/";
-  static const String url = "http://localhost:1234/";
+  static const String url = "https://remerceeapi-yutru3qk.b4a.run/";
+  // static const String url = "http://localhost:1234/";
 
   static Future<User> getUserProfileFromUsername(username) async {
     var sharedPreferences = await SharedPreferences.getInstance();
