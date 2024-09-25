@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../components/ratings_data.dart';
+import '../../components/rating_page/ratings_data.dart';
 import '../../components/user_profile.dart';
 
 class ProfilePage extends StatefulWidget {

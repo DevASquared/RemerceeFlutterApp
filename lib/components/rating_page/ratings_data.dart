@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import './StarsRating.dart';
+import 'stars_rating.dart';
 
 class RatingsData extends StatefulWidget {
   final double meanRate;

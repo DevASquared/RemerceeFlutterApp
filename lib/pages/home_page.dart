@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Header(logout: () => changeAuth(0), showQrCode: () => changePage(2)),
+              Header(logout: () => changeAuth(0), showQrCode: () => changePage(2), fToast: fToast),
               actualSubPage,
               NavBar(
                 index: cursorIndex,
