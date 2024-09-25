@@ -183,7 +183,7 @@ class _SigninState extends State<Signin> {
                           ),
                         ),
                         child: const Text(
-                          'Sign in',
+                          'Inscription',
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
@@ -201,11 +201,11 @@ class _SigninState extends State<Signin> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Already have an account? ',
+                                text: 'Vous avez déjà un compte? ',
                                 style: TextStyle(fontSize: 18, color: Colors.black.withOpacity(0.5)),
                               ),
                               TextSpan(
-                                text: 'Login',
+                                text: 'Connexion',
                                 style: TextStyle(fontSize: 18, color: AppColors.red, fontWeight: FontWeight.bold),
                               ),
                             ],
