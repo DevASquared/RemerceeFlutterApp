@@ -21,8 +21,7 @@ class RatingPage extends StatefulWidget {
 class _RatingPageState extends State<RatingPage> {
   String userName = "";
   String userPlace = "";
-  String userImageUrl =
-      "https://media.istockphoto.com/id/1196391449/fr/photo/verticale-de-femme-africaine.jpg?s=612x612&w=0&k=20&c=Jz9UR3Qg0d6oe6-ETeK5zu8DhZXUB-YVod6EKEnH-tQ=";
+  String userImageUrl = "";
   String userSince = "Inscrite en 2021";
   double rate = 3;
   bool error = false;
@@ -117,11 +116,13 @@ class _RatingPageState extends State<RatingPage> {
                         textAlign: TextAlign.center,
                       ),
                       const Spacer(),
-                      UserRating(rate: 3, event: (rate) {
-                        setState(() {
-                          this.rate = rate;
-                        });
-                      }), // Ajout d'un espacement
+                      UserRating(
+                          rate: 3,
+                          event: (rate) {
+                            setState(() {
+                              this.rate = rate;
+                            });
+                          }), // Ajout d'un espacement
                     ],
                   ),
                 ),
