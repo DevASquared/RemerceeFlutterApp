@@ -22,7 +22,7 @@ class _RatingPageState extends State<RatingPage> {
   String userName = "";
   String userPlace = "";
   String userImageUrl = "";
-  String userSince = "Inscrite en 2021";
+  String userSince = "";
   double rate = 3;
   bool error = false;
 
