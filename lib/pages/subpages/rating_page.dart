@@ -35,19 +35,16 @@ class _RatingPageState extends State<RatingPage> {
           setState(() {
             error = true;
           });
+        } else {
+          setState(() {
+            userName = user.username;
+            userPlace = user.place;
+            userImageUrl = user.imageUrl;
+            userSince = user.since.year.toString();
+          });
         }
-        setData(user);
       },
     );
-  }
-
-  void setData(User user) {
-    setState(() {
-      userName = user.username;
-      userPlace = user.place;
-      userImageUrl = user.imageUrl;
-      userSince = user.since.year.toString();
-    });
   }
 
   @override

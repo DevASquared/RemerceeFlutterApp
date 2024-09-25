@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -12,6 +13,10 @@ class ScanPage extends StatefulWidget {
 
 class _ScanPageState extends State<ScanPage> with WidgetsBindingObserver {
   Barcode? _barcode;
+  var controller = MobileScannerController();
+
+  // Ajout d'un drapeau pour éviter les détections multiples
+  bool isProcessing = false;
 
   Widget _buildBarcode(Barcode? value) {
     if (value == null) {
@@ -30,22 +35,36 @@ class _ScanPageState extends State<ScanPage> with WidgetsBindingObserver {
   }
 
   void _handleBarcode(BarcodeCapture barcodes) {
-    if (mounted) {
+    if (!isProcessing && mounted) { // Vérifiez si une détection est déjà en cours
       setState(() {
+        isProcessing = true; // Empêche d'autres détections
         _barcode = barcodes.barcodes.firstOrNull;
       });
-      if (_barcode != null) openRatingPage();
+
+      if (_barcode != null) {
+        openRatingPage();
+      } else {
+        isProcessing = false; // Réinitialise si le code est nul
+      }
     }
   }
 
   void openRatingPage() {
     if (_barcode?.rawValue != null && _barcode!.rawValue!.isNotEmpty) {
+      log("Open Rating page for : ${_barcode!.rawValue!}");
       widget.event(_barcode!.rawValue!);
+      controller.stop(); // Désactive le scanner après détection
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Aucun code valide scanné.")),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    controller.dispose(); // Assurez-vous de libérer le contrôleur
+    super.dispose();
   }
 
   @override
@@ -56,9 +75,11 @@ class _ScanPageState extends State<ScanPage> with WidgetsBindingObserver {
           width: MediaQuery.of(context).size.width / 1.5,
           height: MediaQuery.of(context).size.width / 1.5,
           child: MobileScanner(
+            controller: controller,
             onDetect: _handleBarcode,
           ),
         ),
+        if (_barcode != null) _buildBarcode(_barcode),
       ],
     );
   }

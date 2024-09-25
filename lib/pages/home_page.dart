@@ -18,50 +18,60 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Widget actualSubPage = const Spacer();
+  bool isNavigating = false;
 
   void changeAuth(int index) {
-    setState(() {
-      Constants.getPreferences().then(
-        (preferences) {
-          if (!preferences.containsKey("connected") || preferences.getBool("connected")! == false) {
-            if (index == 0) {
-              actualSubPage = Signup(event: () => changeAuth(1));
+    if (!isNavigating) {
+      setState(() {
+        isNavigating = true;
+        Constants.getPreferences().then(
+              (preferences) {
+            if (!preferences.containsKey("connected") || preferences.getBool("connected")! == false) {
+              if (index == 0) {
+                actualSubPage = Signup(event: () => changeAuth(1));
+              } else {
+                actualSubPage = Signin(event: () => changeAuth(0));
+              }
             } else {
-              actualSubPage = Signin(event: () => changeAuth(0));
+              actualSubPage = const ProfilePage();
             }
-          } else {
-            actualSubPage = const ProfilePage();
-          }
-        },
-      );
-    });
+            isNavigating = false;
+          },
+        );
+      });
+    }
   }
 
   void changePage(int index) {
-    setState(() {
-      switch (index) {
-        case 0:
-          actualSubPage = const Center(child: Text("Under Construction", style: TextStyle(fontSize: 25)));
-          break;
-        case 1:
-          actualSubPage = ScanPage(event: (username) {
-            setState(() {
-              actualSubPage = RatingPage(
-                username: username,
-                onerror: () {
-                  setState(() {
-                    changePage(1);
-                  });
-                },
-              );
+    if (!isNavigating) { // Empêche l'appel multiple à setState
+      setState(() {
+        isNavigating = true;
+        switch (index) {
+          case 0:
+            actualSubPage = const Center(
+                child: Text("Under Construction", style: TextStyle(fontSize: 25)));
+            break;
+          case 1:
+            actualSubPage = ScanPage(event: (username) {
+              setState(() {
+                actualSubPage = RatingPage(
+                  username: username,
+                  onerror: () {
+                    setState(() {
+                      changePage(1);
+                    });
+                  },
+                );
+              });
             });
-          });
-          break;
-        case 2:
-          changeAuth(1);
-          break;
-      }
-    });
+            break;
+          case 2:
+            changeAuth(1);
+            break;
+        }
+        isNavigating = false;
+      });
+    }
   }
 
   @override
