@@ -5,4 +5,8 @@ class Constants {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool("connected") ?? false;
   }
+
+  static Future<SharedPreferences> getPreferences() async {
+    return await SharedPreferences.getInstance();
+  }
 }

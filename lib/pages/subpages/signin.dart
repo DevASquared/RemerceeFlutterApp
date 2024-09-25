@@ -1,7 +1,12 @@
-import 'dart:developer';
+import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:remercee/utils/colors.dart';
+import 'package:remercee/utils/constants.dart';
+
+import '../../utils/api_controller.dart';
 
 class Signin extends StatefulWidget {
   final void Function() event;
@@ -80,9 +85,25 @@ class _SigninState extends State<Signin> {
                       height: 50,
                       width: MediaQuery.of(context).size.width, // Le bouton prend toute la largeur
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            // Perform sign up logic
+                            var result = await http.post(
+                              Uri.parse("${ApiController.url}auth/login"),
+                              body: {
+                                "username": _username,
+                                "pass": sha256.convert(utf8.encode(_password)).toString(),
+                              },
+                            );
+                            var success = bool.parse(json.decode(result.body.toString())["success"]["hasData"].toString());
+                            if (success) {
+                              Constants.getPreferences().then(
+                                (sharedPreferences) {
+                                  sharedPreferences.setBool("connected", true);
+                                  sharedPreferences.setString("username", _username);
+                                  widget.event();
+                                },
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

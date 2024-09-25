@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:developer';
-
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-
+import 'package:remercee/utils/api_controller.dart';
 import '../../utils/colors.dart';
+import 'package:http/http.dart' as http;
+
+import '../../utils/constants.dart';
 
 class Signup extends StatefulWidget {
   final void Function() event;
-
 
   const Signup({super.key, required this.event});
 
@@ -60,7 +63,7 @@ class _SignupState extends State<Signup> {
                         });
                       },
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
                     // Email Field
                     TextFormField(
@@ -80,7 +83,7 @@ class _SignupState extends State<Signup> {
                         });
                       },
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
                     // Password Field
                     TextFormField(
@@ -101,7 +104,7 @@ class _SignupState extends State<Signup> {
                         });
                       },
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
                     // Confirm Password Field
                     TextFormField(
@@ -128,9 +131,27 @@ class _SignupState extends State<Signup> {
                       height: 50,
                       width: MediaQuery.of(context).size.width, // Le bouton prend toute la largeur
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            // Perform sign up logic
+                            var result = await http.post(
+                              Uri.http("${ApiController.url}auth/register"),
+                              body: {
+                                "username": _username,
+                                "email": _email,
+                                "pass": sha256.convert(utf8.encode(_password)).toString(),
+                                "imageUrl": "",
+                              },
+                            );
+                            var success = bool.parse(json.decode(result.body.toString())["success"]["hasData"].toString());
+                            if (success) {
+                              Constants.getPreferences().then(
+                                (sharedPreferences) {
+                                  sharedPreferences.setBool("connected", true);
+                                  sharedPreferences.setString("username", _username);
+                                  widget.event();
+                                },
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

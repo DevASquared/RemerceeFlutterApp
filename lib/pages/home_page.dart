@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remercee/pages/subpages/profile_page.dart';
 import 'package:remercee/pages/subpages/rating_page.dart';
 import 'package:remercee/pages/subpages/scan_page.dart';
 import 'package:remercee/pages/subpages/signin.dart';
@@ -20,22 +21,41 @@ class _HomePageState extends State<HomePage> {
 
   void changeAuth(int index) {
     setState(() {
-      if (index == 0) {
-        actualSubPage = Signup(event: () => changeAuth(1));
-      } else {
-        actualSubPage = Signin(event: () => changeAuth(0));
-      }
+      Constants.getPreferences().then(
+        (preferences) {
+          if (!preferences.containsKey("connected") || preferences.getBool("connected")! == false) {
+            if (index == 0) {
+              actualSubPage = Signup(event: () => changeAuth(1));
+            } else {
+              actualSubPage = Signin(event: () => changeAuth(0));
+            }
+          } else {
+            actualSubPage = const ProfilePage();
+          }
+        },
+      );
     });
   }
 
   void changePage(int index) {
     setState(() {
-      switch(index) {
+      switch (index) {
         case 0:
           actualSubPage = const Center(child: Text("Under Construction", style: TextStyle(fontSize: 25)));
           break;
         case 1:
-          actualSubPage = const ScanPage();
+          actualSubPage = ScanPage(event: (username) {
+            setState(() {
+              actualSubPage = RatingPage(
+                username: username,
+                onerror: () {
+                  setState(() {
+                    changePage(1);
+                  });
+                },
+              );
+            });
+          });
           break;
         case 2:
           changeAuth(1);
@@ -49,7 +69,18 @@ class _HomePageState extends State<HomePage> {
     Constants.isConnected().then((value) {
       setState(() {
         if (value) {
-          actualSubPage = const RatingPage();
+          actualSubPage = ScanPage(event: (username) {
+            setState(() {
+              actualSubPage = RatingPage(
+                username: username,
+                onerror: () {
+                  setState(() {
+                    changePage(1);
+                  });
+                },
+              );
+            });
+          });
         } else {
           changeAuth(1);
         }
@@ -71,11 +102,14 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Header(),
+              Header(event: () => changeAuth(0)),
               actualSubPage,
-              NavBar(index: 2, event: (index) {
-                changePage(index);
-              }),
+              NavBar(
+                index: 1,
+                event: (index) {
+                  changePage(index);
+                },
+              ),
             ],
           ),
         ),

@@ -11,10 +11,10 @@ class StarsRating extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StarsRating> createState() => _starsRatingState();
+  State<StarsRating> createState() => _StarsRatingState();
 }
 
-class _starsRatingState extends State<StarsRating> {
+class _StarsRatingState extends State<StarsRating> {
   @override
   Widget build(BuildContext context) {
     final meanRate = widget.rate;

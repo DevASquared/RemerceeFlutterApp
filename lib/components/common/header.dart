@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../utils/constants.dart';
+
 class Header extends StatelessWidget {
-  const Header({Key? key}) : super(key: key);
+  final void Function() event;
+
+  const Header({Key? key, required this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,14 @@ class Header extends StatelessWidget {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.15,
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Constants.getPreferences().then(
+                  (value) {
+                    value.setBool("connected", false);
+                    event();
+                  },
+                );
+              },
               icon: const Icon(Icons.output_rounded),
             ),
           ),

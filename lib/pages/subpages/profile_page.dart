@@ -1,55 +1,44 @@
 import 'package:flutter/material.dart';
 
-import '../../components/common/NavBar.dart';
+import '../../components/ratings_data.dart';
 import '../../components/user_profile.dart';
-import '../../components/RatingsData.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
-  String userName = "Sophie Turli";
-  String userRole = "Restaurant la citadelle - Bordeaux";
-  String userImageUrl =
-      "https://media.istockphoto.com/id/1196391449/fr/photo/verticale-de-femme-africaine.jpg?s=612x612&w=0&k=20&c=Jz9UR3Qg0d6oe6-ETeK5zu8DhZXUB-YVod6EKEnH-tQ=";
-  String userSince = "Inscrite en 2021";
-  double meanRate = 4.6;
-  double rateNumber = 57;
+class _ProfilePageState extends State<ProfilePage> {
+  late String userImageUrl = "";
+  late String userName = "";
+  late String userPlace = "";
+  late String userSince = "";
+  double meanRate = 0;
+  double rateNumber = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Remercee"),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: <Widget>[
-            UserProfile(
-              imageUrl: userImageUrl,
-              name: userName,
-              place: userRole,
-              since: userSince,
-            ),
-            const SizedBox(height: 40),
-            RatingsData(
-              meanRate: meanRate,
-              rateNumber: rateNumber,
-            ),
-            // Container(
-            //   height: 150,
-            //   child: NavBar(index: 2),
-            // )
-          ],
-        ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 20),
+      child: Column(
+        children: <Widget>[
+          UserProfile(
+            username: null,
+            public: false,
+          ),
+          const SizedBox(height: 40),
+          RatingsData(
+            meanRate: meanRate,
+            rateNumber: rateNumber,
+          ),
+        ],
       ),
     );
   }

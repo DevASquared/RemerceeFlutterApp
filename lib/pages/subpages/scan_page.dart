@@ -1,14 +1,10 @@
-import 'dart:async';
-import 'dart:developer';
-
-import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:universal_html/html.dart' as html;
 
 class ScanPage extends StatefulWidget {
-  const ScanPage({super.key});
+  final void Function(String) event;
+
+  const ScanPage({super.key, required this.event});
 
   @override
   State<ScanPage> createState() => _ScanPageState();
@@ -38,6 +34,17 @@ class _ScanPageState extends State<ScanPage> with WidgetsBindingObserver {
       setState(() {
         _barcode = barcodes.barcodes.firstOrNull;
       });
+      if (_barcode != null) openRatingPage();
+    }
+  }
+
+  void openRatingPage() {
+    if (_barcode?.rawValue != null && _barcode!.rawValue!.isNotEmpty) {
+      widget.event(_barcode!.rawValue!);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Aucun code valide scanné.")),
+      );
     }
   }
 
