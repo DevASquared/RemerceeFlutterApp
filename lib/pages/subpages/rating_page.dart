@@ -29,7 +29,6 @@ class _RatingPageState extends State<RatingPage> {
   @override
   void initState() {
     super.initState();
-    log(widget.username);
     ApiController.getUserProfileFromUsername(widget.username).then(
       (user) {
         if (user.email == "error") {

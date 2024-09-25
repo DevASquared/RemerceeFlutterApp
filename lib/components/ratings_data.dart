@@ -91,7 +91,6 @@ class _RatingsDataState extends State<RatingsData> {
                               sideTitles: SideTitles(
                                 showTitles: true,
                                 getTitlesWidget: (value, meta) {
-                                  // log(DateTime.now().month.toString());
                                   return Text(months[value.toInt()]);
                                 },
                                 interval: spots.length < 4

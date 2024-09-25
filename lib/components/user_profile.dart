@@ -30,7 +30,6 @@ class _UserProfileState extends State<UserProfile> {
           role = user.place;
           since = user.since.year.toString();
         });
-        log(user.imageUrl);
       },
     );
   }
@@ -51,7 +50,6 @@ class _UserProfileState extends State<UserProfile> {
                   : Image.network(
                       imageUrl,
                       errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                        log("error: $error");
                         return const Icon(Icons.broken_image);
                       },
                       fit: BoxFit.cover,

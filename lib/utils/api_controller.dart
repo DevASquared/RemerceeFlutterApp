@@ -12,11 +12,9 @@ class ApiController {
   static Future<User> getUserProfileFromUsername(username) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     username = (username == null) ? sharedPreferences.getString("username") : username;
-    log("Username : $username");
 
     var result = await http.get(Uri.parse("${url}user?username=$username"));
     var jsonResult = json.decode(result.body.toString());
-    log(jsonResult.toString());
 
     if (bool.parse(jsonResult["success"].toString())) {
       var user = jsonResult["user"];
