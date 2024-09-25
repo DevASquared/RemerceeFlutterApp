@@ -1,28 +1,28 @@
 import 'dart:convert';
-import 'dart:developer';
+
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:remercee/utils/api_controller.dart';
-import '../../utils/colors.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:remercee/utils/colors.dart';
+import 'package:remercee/utils/constants.dart';
 
-import '../../utils/constants.dart';
+import '../../utils/api_controller.dart';
 
-class Signup extends StatefulWidget {
+class Login extends StatefulWidget {
   final void Function() event;
+  final FToast fToast;
 
-  const Signup({super.key, required this.event});
+  const Login({super.key, required this.event, required this.fToast});
 
   @override
-  State<Signup> createState() => _SignupState();
+  State<Login> createState() => _LoginState();
 }
 
-class _SignupState extends State<Signup> {
+class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   String _username = '';
-  String _email = '';
   String _password = '';
-  String _confirmPassword = '';
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _SignupState extends State<Signup> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Créer un compte',
+                'Se connecter',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -51,7 +51,7 @@ class _SignupState extends State<Signup> {
                       decoration: InputDecoration(
                         hintText: 'Username', // Utiliser hintText à la place de labelText
                         filled: true,
-                        fillColor: Color(0xFFEEEEEE),
+                        fillColor: const Color(0xFFEEEEEE),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12), // Bordures arrondies
                           borderSide: BorderSide.none, // Supprimer la bordure
@@ -64,28 +64,6 @@ class _SignupState extends State<Signup> {
                       },
                     ),
                     const SizedBox(height: 16),
-
-                    // Email Field
-                    TextFormField(
-                      cursorColor: Colors.red, // Couleur du curseur
-                      decoration: InputDecoration(
-                        hintText: 'Email', // Utiliser hintText
-                        filled: true,
-                        fillColor: Colors.grey[200],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12), // Bordures arrondies
-                          borderSide: BorderSide.none, // Supprimer la bordure
-                        ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          _email = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Password Field
                     TextFormField(
                       cursorColor: Colors.red, // Couleur du curseur
                       decoration: InputDecoration(
@@ -104,29 +82,7 @@ class _SignupState extends State<Signup> {
                         });
                       },
                     ),
-                    const SizedBox(height: 16),
-
-                    // Confirm Password Field
-                    TextFormField(
-                      cursorColor: Colors.red, // Couleur du curseur
-                      decoration: InputDecoration(
-                        hintText: 'Confirm password', // Utiliser hintText
-                        filled: true,
-                        fillColor: Colors.grey[200],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12), // Bordures arrondies
-                          borderSide: BorderSide.none, // Supprimer la bordure
-                        ),
-                      ),
-                      obscureText: true,
-                      onChanged: (value) {
-                        setState(() {
-                          _confirmPassword = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 50),
-
+                    const SizedBox(height: 100),
                     SizedBox(
                       height: 50,
                       width: MediaQuery.of(context).size.width, // Le bouton prend toute la largeur
@@ -134,23 +90,25 @@ class _SignupState extends State<Signup> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             var result = await http.post(
-                              Uri.http("${ApiController.url}auth/register"),
+                              Uri.parse("${ApiController.url}auth/login"),
                               body: {
                                 "username": _username,
-                                "email": _email,
                                 "pass": sha256.convert(utf8.encode(_password)).toString(),
-                                "imageUrl": "",
                               },
                             );
-                            var success = bool.parse(json.decode(result.body.toString())["success"]["hasData"].toString());
-                            if (success) {
-                              Constants.getPreferences().then(
-                                (sharedPreferences) {
-                                  sharedPreferences.setBool("connected", true);
-                                  sharedPreferences.setString("username", _username);
-                                  widget.event();
-                                },
-                              );
+                            try {
+                              var success = bool.parse(json.decode(result.body.toString())["success"]["hasData"].toString());
+                              if (success) {
+                                Constants.getPreferences().then(
+                                  (sharedPreferences) {
+                                    sharedPreferences.setBool("connected", true);
+                                    sharedPreferences.setString("username", _username);
+                                    widget.event();
+                                  },
+                                );
+                              }
+                            } catch (e) {
+                              Constants.showNotConnectedToast(widget.fToast, "Erreur de connection");
                             }
                           }
                         },
@@ -161,7 +119,7 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         child: Text(
-                          'Sign in',
+                          'Login',
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
@@ -179,11 +137,11 @@ class _SignupState extends State<Signup> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Already have an account? ',
+                                text: 'Don’t have an account? ',
                                 style: TextStyle(fontSize: 18, color: Colors.black.withOpacity(0.5)),
                               ),
                               TextSpan(
-                                text: 'Login',
+                                text: 'Sign In',
                                 style: TextStyle(fontSize: 18, color: AppColors.red, fontWeight: FontWeight.bold),
                               ),
                             ],

@@ -47,6 +47,8 @@ dependencies:
   http: ^1.2.2
   crypto: ^3.0.5
   qr_flutter: ^4.1.0
+  fluttertoast: ^8.2.8
+  email_validator: ^3.0.0
 
 dev_dependencies:
   flutter_test:

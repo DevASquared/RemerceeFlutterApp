@@ -1,10 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:remercee/pages/subpages/profile_page.dart';
 import 'package:remercee/pages/subpages/qr_code_page.dart';
 import 'package:remercee/pages/subpages/rating_page.dart';
 import 'package:remercee/pages/subpages/scan_page.dart';
+import 'package:remercee/pages/subpages/login.dart';
 import 'package:remercee/pages/subpages/signin.dart';
-import 'package:remercee/pages/subpages/signup.dart';
 import 'package:remercee/utils/constants.dart';
 
 import '../components/common/NavBar.dart';
@@ -20,57 +23,64 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Widget actualSubPage = const Spacer();
   bool isNavigating = false;
+  int cursorIndex = 1;
+  bool connected = false;
+  late FToast fToast;
 
   void changeAuth(int index) {
-    if (!isNavigating) {
-      setState(() {
-        isNavigating = true;
-        Constants.getPreferences().then(
-          (preferences) {
-            if (!preferences.containsKey("connected") || preferences.getBool("connected")! == false) {
-              if (index == 0) {
-                actualSubPage = Signup(event: () => changeAuth(1));
-              } else {
-                actualSubPage = Signin(event: () => changeAuth(0));
-              }
+    log("Change Auth");
+    log("Is Navigating : $isNavigating");
+    setState(() {
+      isNavigating = true;
+      Constants.getPreferences().then(
+        (preferences) {
+          setState(() {
+            cursorIndex = 1;
+          });
+          if (!preferences.containsKey("connected") || preferences.getBool("connected")! == false) {
+            if (index == 0) {
+              actualSubPage = Signin(event: () => changeAuth(1), fToast: fToast);
             } else {
-              actualSubPage = const ProfilePage();
+              actualSubPage = Login(event: () => changeAuth(0), fToast: fToast);
             }
-            isNavigating = false;
-          },
-        );
-      });
-    }
+          } else {
+            actualSubPage = const ProfilePage();
+          }
+          isNavigating = false;
+        },
+      );
+    });
   }
 
   void changePage(int index) {
     if (!isNavigating) {
-      // Empêche l'appel multiple à setState
-      setState(() {
+      setState(() async {
         isNavigating = true;
         switch (index) {
           case 0:
-            actualSubPage = const Center(child: Text("Under Construction", style: TextStyle(fontSize: 25)));
+            if (await Constants.isConnected()) {
+              actualSubPage = ScanPage(event: (username) {
+                setState(() {
+                  actualSubPage = RatingPage(
+                    username: username,
+                    onerror: () {
+                      changePage(1);
+                    },
+                    closePage: () {
+                      changePage(1);
+                    },
+                  );
+                });
+              });
+            } else {
+              Constants.showNotConnectedToast(fToast, "Vous n'êtes pas connecté !");
+            }
             break;
           case 1:
-            actualSubPage = ScanPage(event: (username) {
-              setState(() {
-                actualSubPage = RatingPage(
-                  username: username,
-                  onerror: () {
-                    changePage(1);
-                  },
-                  closePage: () {
-                    changePage(1);
-                  },
-                );
-              });
-            });
-            break;
-          case 2:
+            log("Change page");
             changeAuth(1);
             break;
-          case 5:
+          case 2:
             actualSubPage = const QrCodePage();
         }
         isNavigating = false;
@@ -80,9 +90,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
     Constants.isConnected().then((value) {
       setState(() {
+        log("Value : $value");
         if (value) {
+          setState(() {
+            cursorIndex = 1;
+          });
           actualSubPage = ScanPage(event: (username) {
             setState(() {
               actualSubPage = RatingPage(
@@ -97,11 +114,14 @@ class _HomePageState extends State<HomePage> {
             });
           });
         } else {
+          setState(() {
+            cursorIndex = 1;
+          });
           changeAuth(1);
+          log("Cursor index : $cursorIndex");
         }
       });
     });
-    super.initState();
   }
 
   @override
@@ -117,10 +137,10 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Header(logout: () => changeAuth(0), showQrCode: () => changePage(5)),
+              Header(logout: () => changeAuth(0), showQrCode: () => changePage(2)),
               actualSubPage,
               NavBar(
-                index: 1,
+                index: cursorIndex,
                 event: (index) {
                   changePage(index);
                 },

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:remercee/pages/home_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -10,10 +11,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      builder: FToastBuilder(),
       debugShowCheckedModeBanner: false,
       title: 'Remercee',
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }

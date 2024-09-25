@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:remercee/utils/colors.dart';
 
@@ -6,8 +8,8 @@ class NavBar extends StatefulWidget {
   final void Function(dynamic index) event;
 
   const NavBar({
-    required this.index,
     Key? key,
+    required this.index,
     required this.event,
   }) : super(key: key);
 
@@ -22,6 +24,7 @@ class _NavBarState extends State<NavBar> {
   @override
   void initState() {
     super.initState();
+    log("Index : ${widget.index}");
     selectedIndex = widget.index; // Initialise selectedIndex avec l'index fourni
   }
 
@@ -31,7 +34,6 @@ class _NavBarState extends State<NavBar> {
     var width = MediaQuery.of(context).size.width;
     var iconSize = width * 0.09;
     var circleSize = iconSize * 1.5;
-    pos = changePos(selectedIndex, width, iconSize, circleSize);
   }
 
   @override
@@ -47,75 +49,43 @@ class _NavBarState extends State<NavBar> {
         SizedBox(
           height: containerHeight,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: width / 6),
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    iconSize: iconSize,
-                    icon: Icon(
-                      Icons.manage_search_rounded,
-                      color: selectedIndex == 0 ? AppColors.red : Colors.black,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        pos = changePos(0, width, iconSize, circleSize);
-                        selectedIndex = 0; // Mets à jour selectedIndex
-                        widget.event(0);
-                      });
-                    },
+            padding: EdgeInsets.symmetric(horizontal: width / 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  iconSize: iconSize,
+                  icon: Icon(
+                    Icons.qr_code_scanner_rounded,
+                    color: selectedIndex == 0 ? AppColors.red : Colors.black,
                   ),
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    iconSize: iconSize,
-                    icon: Icon(
-                      Icons.qr_code_scanner_rounded,
-                      color: selectedIndex == 1 ? AppColors.red : Colors.black,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        pos = changePos(1, width, iconSize, circleSize);
-                        selectedIndex = 1; // Mets à jour selectedIndex
-                        widget.event(1);
-                      });
-                    },
+                  onPressed: () {
+                    setState(() {
+                      selectedIndex = 0; // Mets à jour selectedIndex
+                      widget.event(0);
+                    });
+                  },
+                ),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  iconSize: iconSize,
+                  icon: Icon(
+                    Icons.account_circle_outlined,
+                    color: selectedIndex == 1 ? AppColors.red : Colors.black,
                   ),
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    iconSize: iconSize,
-                    icon: Icon(
-                      Icons.account_circle_outlined,
-                      color: selectedIndex == 2 ? AppColors.red : Colors.black,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        pos = changePos(2, width, iconSize, circleSize);
-                        selectedIndex = 2; // Mets à jour selectedIndex
-                        widget.event(2);
-                      });
-                    },
-                  ),
-                ],
-              ),
+                  onPressed: () {
+                    setState(() {
+                      selectedIndex = 1; // Mets à jour selectedIndex
+                      widget.event(1);
+                    });
+                  },
+                ),
+              ],
             ),
           ),
         ),
       ],
     );
-  }
-
-  double changePos(int index, double width, double iconSize, double circleSize) {
-    switch (index) {
-      case 0:
-        return (width / 6) - (circleSize - iconSize) / 2;
-      case 1:
-        return (width / 2) - (circleSize / 2);
-      case 2:
-        return (5 * width / 6) - (circleSize + iconSize) / 2;
-      default:
-        return 0;
-    }
   }
 }

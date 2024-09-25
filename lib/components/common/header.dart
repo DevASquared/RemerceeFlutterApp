@@ -39,6 +39,7 @@ class Header extends StatelessWidget {
                 Constants.getPreferences().then(
                   (value) {
                     value.setBool("connected", false);
+                    value.remove("username");
                     logout();
                   },
                 );
