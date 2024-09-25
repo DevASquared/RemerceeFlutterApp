@@ -42,19 +42,21 @@ class _UserProfileState extends State<UserProfile> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           GestureDetector(
-            child: CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.grey,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(500),
               child: imageUrl == ""
                   ? widget.public
                       ? Container()
                       : const Icon(Icons.edit)
                   : Image.network(
-                      "https://via.placeholder.com/150",
+                      imageUrl,
                       errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                         log("error: $error");
                         return const Icon(Icons.broken_image);
                       },
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.15,
                       loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                         if (loadingProgress == null) {
                           return child;
