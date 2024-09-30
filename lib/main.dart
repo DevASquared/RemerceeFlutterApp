@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:remercee/pages/edit_page.dart';
 import 'package:remercee/pages/home_page.dart';
+
+import 'models/user_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,6 +18,13 @@ class MyApp extends StatelessWidget {
       builder: FToastBuilder(),
       debugShowCheckedModeBanner: false,
       title: 'Remercee',
+      // home: EditPage(
+      //     user: User(
+      //         username: "Antonin",
+      //         since: DateTime.now(),
+      //         email: "antonindosouto@gmail.com",
+      //         imageUrl: "https://firebasestorage.googleapis.com/v0/b/remercee-project.appspot.com/o/Antonin.jpg?alt=media",
+      //         places: [""]),),
       home: const HomePage(),
     );
   }

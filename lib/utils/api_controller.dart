@@ -24,7 +24,7 @@ class ApiController {
         email: user["email"],
         username: user["username"],
         imageUrl: user["imageUrl"],
-        place: user["role"],
+        places: user["role"],
         // notes: user["notes"].toString(),
         since: DateTime.fromMillisecondsSinceEpoch(user["since"]),
       );

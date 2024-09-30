@@ -29,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
       padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 20),
       child: Column(
         children: <Widget>[
-          UserProfile(
+          const UserProfile(
             username: null,
             public: false,
           ),

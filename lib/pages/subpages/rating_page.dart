@@ -21,7 +21,7 @@ class RatingPage extends StatefulWidget {
 
 class _RatingPageState extends State<RatingPage> {
   String userName = "";
-  String userPlace = "";
+  List<String> userPlace = [""];
   String userImageUrl = "";
   String userSince = "";
   double rate = 3;
@@ -46,7 +46,7 @@ class _RatingPageState extends State<RatingPage> {
           if (user.username != "L'utilisateur n'existe pas") {
             setState(() {
               userName = user.username;
-              userPlace = user.place;
+              userPlace = user.places;
               userImageUrl = user.imageUrl;
               userSince = user.since.year.toString();
               userprofile = UserProfile(

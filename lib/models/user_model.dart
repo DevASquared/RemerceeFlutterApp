@@ -1,6 +1,6 @@
 class User {
   String imageUrl;
-  String place;
+  List<String> places;
   // String notes;
   final String email;
   final String username;
@@ -8,7 +8,7 @@ class User {
 
   User({
     this.imageUrl = "",
-    this.place = "",
+    this.places = const [],
     // required this.notes,
     required this.email,
     required this.username,

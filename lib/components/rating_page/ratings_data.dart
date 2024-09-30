@@ -24,14 +24,14 @@ class _RatingsDataState extends State<RatingsData> {
     final width = MediaQuery.of(context).size.width;
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     List<FlSpot> spots = [
-      // const FlSpot(0, 0),
-      // const FlSpot(1, 4.2),
-      // const FlSpot(2, 4.5),
-      // const FlSpot(3, 4),
-      // const FlSpot(4, 4.6),
+      const FlSpot(0, 0),
+      const FlSpot(1, 4.2),
+      const FlSpot(2, 4.5),
+      const FlSpot(3, 4),
+      const FlSpot(4, 4.6),
     ];
 
-    return spots.isEmpty ? Container() : Column(
+    return /*spots.isEmpty ? Container() :*/ Column(
       children: [
         const Text(
           "Récap des notes",
