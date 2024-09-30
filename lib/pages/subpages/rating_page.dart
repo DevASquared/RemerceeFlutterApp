@@ -21,7 +21,7 @@ class RatingPage extends StatefulWidget {
 
 class _RatingPageState extends State<RatingPage> {
   String userName = "";
-  List<String> userPlace = [""];
+  List<dynamic> userPlace = [""];
   String userImageUrl = "";
   String userSince = "";
   double rate = 3;

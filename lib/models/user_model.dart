@@ -1,6 +1,6 @@
 class User {
   String imageUrl;
-  List<String> places;
+  List<dynamic> places;
   // String notes;
   final String email;
   final String username;

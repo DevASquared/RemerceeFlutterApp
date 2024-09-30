@@ -54,27 +54,31 @@ class _HomePageState extends State<HomePage> {
 
   void changePage(int index) {
     if (!isNavigating) {
-      setState(() async {
+      setState(() {
         isNavigating = true;
         switch (index) {
           case 0:
-            if (await Constants.isConnected()) {
-              actualSubPage = ScanPage(event: (username) {
-                setState(() {
-                  actualSubPage = RatingPage(
-                    username: username,
-                    onerror: () {
-                      changePage(1);
-                    },
-                    closePage: () {
-                      changePage(1);
-                    },
-                  );
-                });
-              });
-            } else {
-              Constants.showNotConnectedToast(fToast, "Vous n'êtes pas connecté !");
-            }
+            Constants.isConnected().then(
+              (value) {
+                if (value) {
+                  actualSubPage = ScanPage(event: (username) {
+                    setState(() {
+                      actualSubPage = RatingPage(
+                        username: username,
+                        onerror: () {
+                          changePage(1);
+                        },
+                        closePage: () {
+                          changePage(1);
+                        },
+                      );
+                    });
+                  });
+                } else {
+                  Constants.showNotConnectedToast(fToast, "Vous n'êtes pas connecté !");
+                }
+              },
+            );
             break;
           case 1:
             log("Change page");
@@ -138,7 +142,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Header(logout: () => changeAuth(0), showQrCode: () => changePage(2), fToast: fToast),
-              ProfilePage(),
+              actualSubPage,
               NavBar(
                 index: cursorIndex,
                 event: (index) {
