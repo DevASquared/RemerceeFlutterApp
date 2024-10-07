@@ -59,35 +59,49 @@ class _HomePageState extends State<HomePage> {
         switch (index) {
           case 0:
             Constants.isConnected().then(
-              (value) {
+                  (value) {
                 if (value) {
-                  actualSubPage = ScanPage(event: (username) {
-                    setState(() {
-                      actualSubPage = RatingPage(
-                        username: username,
-                        onerror: () {
-                          changePage(1);
-                        },
-                        closePage: () {
-                          changePage(1);
-                        },
-                      );
+                  setState(() {
+                    actualSubPage = ScanPage(event: (username) {
+                      setState(() {
+                        actualSubPage = RatingPage(
+                          username: username,
+                          onerror: () {
+                            changePage(1);
+                          },
+                          closePage: () {
+                            changePage(1);
+                          },
+                        );
+                      });
                     });
+                    cursorIndex = 0;  // Met à jour l'index uniquement si l'utilisateur est connecté
                   });
                 } else {
                   Constants.showNotConnectedToast(fToast, "Vous n'êtes pas connecté !");
+                  // Ne change pas l'index si non connecté
                 }
+                setState(() {
+                  isNavigating = false;  // Réinitialise isNavigating après la vérification
+                });
               },
             );
             break;
           case 1:
             log("Change page");
             changeAuth(1);
+            setState(() {
+              isNavigating = false;  // Réinitialise isNavigating après la navigation
+            });
             break;
           case 2:
-            actualSubPage = const QrCodePage();
+            setState(() {
+              actualSubPage = const QrCodePage();
+              cursorIndex = 2;  // Met à jour l'index
+              isNavigating = false;  // Réinitialise isNavigating après la navigation
+            });
+            break;
         }
-        isNavigating = false;
       });
     }
   }
@@ -145,7 +159,7 @@ class _HomePageState extends State<HomePage> {
               actualSubPage,
               NavBar(
                 index: cursorIndex,
-                event: (index) {
+                event: (index, selectedIndex) {
                   changePage(index);
                 },
               ),

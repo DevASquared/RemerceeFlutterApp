@@ -1,11 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:remercee/utils/colors.dart';
 
 class NavBar extends StatefulWidget {
   final int index;
-  final void Function(dynamic index) event;
+  final void Function(int index, int selectedIndex) event;
 
   const NavBar({
     Key? key,
@@ -19,21 +18,13 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   double pos = 0;
-  int selectedIndex = 0; // Nouvelle variable pour stocker l'index sélectionné
+  int selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
     log("Index : ${widget.index}");
-    selectedIndex = widget.index; // Initialise selectedIndex avec l'index fourni
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    var width = MediaQuery.of(context).size.width;
-    var iconSize = width * 0.09;
-    var circleSize = iconSize * 1.5;
+    selectedIndex = widget.index;
   }
 
   @override
@@ -41,7 +32,6 @@ class _NavBarState extends State<NavBar> {
     var width = MediaQuery.of(context).size.width - 24;
     var iconSize = width * 0.09;
     var containerHeight = iconSize * 2;
-    var circleSize = iconSize * 1.5;
 
     return Stack(
       alignment: Alignment.center,
@@ -58,13 +48,10 @@ class _NavBarState extends State<NavBar> {
                   iconSize: iconSize,
                   icon: Icon(
                     Icons.qr_code_scanner_rounded,
-                    color: selectedIndex == 0 ? AppColors.red : Colors.black,
+                    color: widget.index == 0 ? AppColors.red : Colors.black,
                   ),
                   onPressed: () {
-                    setState(() {
-                      selectedIndex = 0; // Mets à jour selectedIndex
-                      widget.event(0);
-                    });
+                    widget.event(0, selectedIndex);
                   },
                 ),
                 IconButton(
@@ -72,13 +59,11 @@ class _NavBarState extends State<NavBar> {
                   iconSize: iconSize,
                   icon: Icon(
                     Icons.account_circle_outlined,
-                    color: selectedIndex == 1 ? AppColors.red : Colors.black,
+                    color: widget.index == 1 ? AppColors.red : Colors.black,
                   ),
                   onPressed: () {
-                    setState(() {
-                      selectedIndex = 1; // Mets à jour selectedIndex
-                      widget.event(1);
-                    });
+                    log("test");
+                    widget.event(1, selectedIndex);
                   },
                 ),
               ],

@@ -25,6 +25,7 @@ class _EditPageState extends State<EditPage> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     imageUrl = imageUrl ?? widget.user.imageUrl;
+    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -34,20 +35,18 @@ class _EditPageState extends State<EditPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height / 15,
+                height: height / 15,
                 width: width * 0.95,
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ActionText(text: "Annuler"),
                     Text("Edition"),
-                    ActionText(text: "Enregistrer"),
+                    ActionText(text: "Enregistrer", primary: true),
                   ],
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 20,
-              ),
+              SizedBox(height: height / 20),
               Hero(
                 tag: "profile_pic",
                 child: SizedBox(
@@ -62,7 +61,12 @@ class _EditPageState extends State<EditPage> {
                           onTap: () async {},
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(500),
-                            child: Image.network(widget.user.imageUrl),
+                            child: Image.network(
+                              widget.user.imageUrl,
+                              width: width / 2,
+                              height: width / 2,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
@@ -134,19 +138,24 @@ class _EditPageState extends State<EditPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 40,
-              ),
+              SizedBox(height: height / 40),
               Text(
                 widget.user.username,
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 20,
+              SizedBox(height: height / 20),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                height: 40,
+                width: width / 3,
               ),
+              SizedBox(height: height / 40),
               SizedBox(
                 width: MediaQuery.of(context).size.width / 1.5,
-                height: MediaQuery.of(context).size.height / 10,
+                height: height / 10,
                 child: TextField(
                   textAlign: TextAlign.start,
                   textAlignVertical: TextAlignVertical.top,

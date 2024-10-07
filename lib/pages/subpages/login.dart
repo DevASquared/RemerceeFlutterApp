@@ -88,29 +88,7 @@ class _LoginState extends State<Login> {
                       width: MediaQuery.of(context).size.width, // Le bouton prend toute la largeur
                       child: ElevatedButton(
                         onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            var result = await http.post(
-                              Uri.parse("${ApiController.url}auth/login"),
-                              body: {
-                                "username": _username,
-                                "pass": sha256.convert(utf8.encode(_password)).toString(),
-                              },
-                            );
-                            try {
-                              var success = bool.parse(json.decode(result.body.toString())["success"]["hasData"].toString());
-                              if (success) {
-                                Constants.getPreferences().then(
-                                  (sharedPreferences) {
-                                    sharedPreferences.setBool("connected", true);
-                                    sharedPreferences.setString("username", _username);
-                                    widget.event();
-                                  },
-                                );
-                              }
-                            } catch (e) {
-                              Constants.showNotConnectedToast(widget.fToast, "Erreur de connection");
-                            }
-                          }
+                          await ApiController.login(widget, _formKey, _username, _password);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.red,
