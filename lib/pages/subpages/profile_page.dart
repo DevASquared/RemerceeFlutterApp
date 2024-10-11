@@ -34,10 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
             public: false,
           ),
           const SizedBox(height: 40),
-          RatingsData(
-            meanRate: meanRate,
-            rateNumber: rateNumber,
-          ),
+          RatingsData(),
         ],
       ),
     );

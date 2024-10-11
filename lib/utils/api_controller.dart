@@ -9,8 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'constants.dart';
 
 class ApiController {
-  static const String url = "https://remerceeapi-yutru3qk.b4a.run/";
-  // static const String url = "http://localhost:1234/";
+  // static const String url = "https://remerceeapi-yutru3qk.b4a.run/";
+  static const String url = "http://localhost:1234/";
 
   static Future<User> getUserProfileFromUsername(username) async {
     var sharedPreferences = await SharedPreferences.getInstance();
@@ -27,11 +27,11 @@ class ApiController {
         username: user["username"],
         imageUrl: user["imageUrl"],
         places: user["role"],
-        // notes: user["notes"].toString(),
+        dynamicNotes: user["notes"],
         since: DateTime.fromMillisecondsSinceEpoch(user["since"]),
       );
     } else {
-      return User(email: "error", username: "L'utilisateur n'existe pas", /*notes: [],*/ since: DateTime.now());
+      return User(email: "error", username: "L'utilisateur n'existe pas", dynamicNotes: [], since: DateTime.now());
     }
   }
 
