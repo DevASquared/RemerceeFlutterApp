@@ -25,7 +25,6 @@ class _UserProfileState extends State<UserProfile> {
   @override
   void initState() {
     super.initState();
-    log("UserProfile[25]: Used username : ${widget.username}"); // empty
     // Appeler initializeUser une seule fois dans initState
     userFuture = initializeUser();
   }

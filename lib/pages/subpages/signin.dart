@@ -164,7 +164,7 @@ class _SigninState extends State<Signin> {
                                 "imageUrl": "",
                               },
                             );
-                            var success = bool.parse(json.decode(result.body.toString())["success"]["hasData"].toString());
+                            var success = bool.parse(json.decode(result.body.toString())["success"].toString());
                             if (success) {
                               Constants.getPreferences().then(
                                 (sharedPreferences) {

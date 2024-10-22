@@ -13,7 +13,12 @@ class RatingPage extends StatefulWidget {
   final void Function() onerror;
   final void Function() closePage;
 
-  const RatingPage({super.key, required this.username, required this.onerror, required this.closePage});
+  const RatingPage({
+    super.key,
+    required this.username,
+    required this.onerror,
+    required this.closePage,
+  });
 
   @override
   State<RatingPage> createState() => _RatingPageState();
@@ -34,7 +39,6 @@ class _RatingPageState extends State<RatingPage> {
   @override
   void initState() {
     super.initState();
-    log("Rating_page[32]: Used username : ${widget.username}");
     ApiController.getUserProfileFromUsername(widget.username).then(
       (user) {
         if (user.email == "error") {
@@ -42,7 +46,6 @@ class _RatingPageState extends State<RatingPage> {
             error = true;
           });
         } else {
-          log("Rating_page[40]: Used username : ${user.username}");
           if (user.username != "L'utilisateur n'existe pas") {
             setState(() {
               userName = user.username;
@@ -67,8 +70,6 @@ class _RatingPageState extends State<RatingPage> {
 
   @override
   Widget build(BuildContext context) {
-    log("Rating_page[62]: On build error : $error"); // false
-    log("Rating_page[63]: On build username : $userName"); // empty
     return SizedBox(
       height: MediaQuery.of(context).size.height / 1.2,
       width: MediaQuery.of(context).size.width / 1.2,

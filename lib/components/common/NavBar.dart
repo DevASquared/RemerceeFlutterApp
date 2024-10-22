@@ -23,7 +23,6 @@ class _NavBarState extends State<NavBar> {
   @override
   void initState() {
     super.initState();
-    log("Index : ${widget.index}");
     selectedIndex = widget.index;
   }
 
@@ -43,15 +42,16 @@ class _NavBarState extends State<NavBar> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                // Remplacer l'icône de QR code par une icône "edit"
                 IconButton(
                   padding: EdgeInsets.zero,
                   iconSize: iconSize,
                   icon: Icon(
-                    Icons.qr_code_scanner_rounded,
+                    Icons.qr_code_2_rounded,  // Icône d'édition
                     color: widget.index == 0 ? AppColors.red : Colors.black,
                   ),
                   onPressed: () {
-                    widget.event(0, selectedIndex);
+                    widget.event(0, selectedIndex);  // Mettre à jour l'index pour la page Edit
                   },
                 ),
                 IconButton(
@@ -62,7 +62,6 @@ class _NavBarState extends State<NavBar> {
                     color: widget.index == 1 ? AppColors.red : Colors.black,
                   ),
                   onPressed: () {
-                    log("test");
                     widget.event(1, selectedIndex);
                   },
                 ),

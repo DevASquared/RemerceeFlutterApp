@@ -1,0 +1,7 @@
+[
+  {
+    "origin": ["https://firebasestorage.googleapis.com/v0/b/remercee-project.appspot.com/o/Antonin.jpg?alt=media"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  }
+]

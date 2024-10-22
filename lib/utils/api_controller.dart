@@ -15,20 +15,20 @@ class ApiController {
   static Future<User> getUserProfileFromUsername(username) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     username = (username == null) ? sharedPreferences.getString("username") : username;
-    log("ApiController[15]: Username used in API call: $username");
 
     var result = await http.get(Uri.parse("${url}user?username=$username"));
     var jsonResult = json.decode(result.body.toString());
 
     if (bool.parse(jsonResult["success"].toString())) {
       var user = jsonResult["user"];
+      log(user.toString());
       return User(
         email: user["email"],
         username: user["username"],
-        imageUrl: user["imageUrl"],
-        places: user["role"],
-        dynamicNotes: user["notes"],
-        since: DateTime.fromMillisecondsSinceEpoch(user["since"]),
+        imageUrl: user["imageUrl"] ?? "",
+        places: user["role"] ?? [],
+        dynamicNotes: user["notes"] ?? [],
+        since: DateTime.fromMillisecondsSinceEpoch(int.parse(user["since"].toString())),
       );
     } else {
       return User(email: "error", username: "L'utilisateur n'existe pas", dynamicNotes: [], since: DateTime.now());

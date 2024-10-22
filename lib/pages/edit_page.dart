@@ -114,7 +114,6 @@ class _EditPageState extends State<EditPage> {
                                           var response = await request.send();
                                           if (response.statusCode == 200) {
                                             var responseBody = await response.stream.bytesToString();
-                                            log("Body : $responseBody");
                                             ScaffoldMessenger.of(context).showSnackBar(
                                               const SnackBar(content: Text('Image et username envoyés avec succès')),
                                             );

@@ -43,7 +43,6 @@ class _RatingsDataState extends State<RatingsData> {
             });
             int i = 0;
             for (double note in user.getNotesSumLast12Months()) {
-              log("$i/${DateTime.now().year}: $note");
               if (note != 0) {
                 setState(() {
                   if (user.getNotesSumLast12Months()[i - 1] == 0) {
@@ -54,7 +53,6 @@ class _RatingsDataState extends State<RatingsData> {
               }
               i++;
             }
-            log(user.notes.toString());
           },
         );
       },

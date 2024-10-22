@@ -51,7 +51,6 @@ class _ScanPageState extends State<ScanPage> with WidgetsBindingObserver {
 
   void openRatingPage() {
     if (_barcode?.rawValue != null && _barcode!.rawValue!.isNotEmpty) {
-      log("Scan_page[54]: Open Rating page for : ${_barcode!.rawValue!}");
       widget.event(_barcode!.rawValue!);
       controller.stop();
     } else {

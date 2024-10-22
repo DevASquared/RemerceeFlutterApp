@@ -41,8 +41,6 @@ class User {
       }
     }
 
-    log("Sommes par mois : $notesSumPerMonth");
-
     // On commence à remplir les moyennes à partir du mois courant
     for (int i = 0; i < 12; i++) {
       DateTime currentMonth = DateTime(now.year, now.month - i, 1);

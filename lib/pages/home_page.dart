@@ -28,8 +28,6 @@ class _HomePageState extends State<HomePage> {
   late FToast fToast;
 
   void changeAuth(int index) {
-    log("Change Auth");
-    log("Is Navigating : $isNavigating");
     setState(() {
       isNavigating = true;
       Constants.getPreferences().then(
@@ -88,7 +86,6 @@ class _HomePageState extends State<HomePage> {
             );
             break;
           case 1:
-            log("Change page");
             changeAuth(1);
             setState(() {
               isNavigating = false;  // Réinitialise isNavigating après la navigation
@@ -113,10 +110,9 @@ class _HomePageState extends State<HomePage> {
     fToast.init(context);
     Constants.isConnected().then((value) {
       setState(() {
-        log("Value : $value");
         if (value) {
           setState(() {
-            cursorIndex = 1;
+            cursorIndex = 0;
           });
           actualSubPage = ScanPage(event: (username) {
             setState(() {
@@ -136,7 +132,6 @@ class _HomePageState extends State<HomePage> {
             cursorIndex = 1;
           });
           changeAuth(1);
-          log("Cursor index : $cursorIndex");
         }
       });
     });
