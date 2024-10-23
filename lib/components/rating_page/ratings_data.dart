@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'stars_rating.dart';
 
 class RatingsData extends StatefulWidget {
-
   const RatingsData({
     Key? key,
   }) : super(key: key);
@@ -39,7 +38,12 @@ class _RatingsDataState extends State<RatingsData> {
           (user) {
             setState(() {
               rateCount = user.notes.length;
-              averageRate = user.notes.map((e) => e.rate).reduce((v, e) => v + e,) / user.notes.length;
+              if (rateCount > 0) {
+                var notesSum = user.notes.map((e) => e.rate).reduce(
+                      (v, e) => v + e,
+                    );
+                averageRate = notesSum / user.notes.length;
+              }
             });
             int i = 0;
             for (double note in user.getNotesSumLast12Months()) {

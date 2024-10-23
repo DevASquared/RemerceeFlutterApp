@@ -63,10 +63,16 @@ class _UserProfileState extends State<UserProfile> {
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 if (role.isNotEmpty && role[0] != "")
-                  Text(
-                    role.join("\n"),
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
+                  for (var r in role) Text(r),
+                // Container(
+                //   color: Colors.red,
+                //   child: Center(
+                //     child: Text(
+                //       role.join("\n"),
+                //       style: const TextStyle(fontSize: 16, color: Colors.grey),
+                //     ),
+                //   ),
+                // ),
                 Text(
                   "Inscrite en $since",
                   style: const TextStyle(fontSize: 14, color: Colors.grey),
