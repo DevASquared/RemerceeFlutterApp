@@ -1,17 +1,20 @@
 import 'dart:developer';
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:remercee/components/common/action_text.dart';
 import 'package:remercee/utils/api_controller.dart';
 import 'package:universal_html/html.dart';
 
+import '../components/work_place_popup.dart';
 import '../models/user_model.dart';
 
 class EditPage extends StatefulWidget {
   final User user;
+  final List<String> workPlaces;
 
-  const EditPage({Key? key, required this.user}) : super(key: key);
+  const EditPage({Key? key, required this.user, required this.workPlaces}) : super(key: key);
 
   @override
   State<EditPage> createState() => _EditPageState();
@@ -20,6 +23,12 @@ class EditPage extends StatefulWidget {
 class _EditPageState extends State<EditPage> {
   var controller = TextEditingController(text: "test");
   String? imageUrl;
+
+  void addWorkPlace(String newWorkPlace) {
+    setState(() {
+      widget. workPlaces.add(newWorkPlace);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +50,7 @@ class _EditPageState extends State<EditPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ActionText(text: "Annuler"),
-                    Text("Edition"),
+                    Text("Edition", style: TextStyle(fontSize: 25),),
                     ActionText(text: "Enregistrer", primary: true),
                   ],
                 ),
@@ -142,14 +151,75 @@ class _EditPageState extends State<EditPage> {
                 widget.user.username,
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: height / 20),
+              SizedBox(height: height / 80),
               Container(
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: 150, // Hauteur maximale pour afficher environ 3 éléments
+                        ),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: widget.workPlaces.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(widget.workPlaces[index], textAlign: TextAlign.center,),
+                              trailing: IconButton(
+                                icon: Icon(Icons.close, color: Colors.red),
+                                onPressed: () {
+                                  setState(() {
+                                    widget.workPlaces.removeAt(index); // Supprime l'élément
+                                  });
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AddWorkPlacePopup(
+                              onAddWorkPlace: addWorkPlace,
+                            );
+                          },
+                        );
+                      },
+                      child: DottedBorder(
+                        color: Color(0xFF808080), // Couleur des pointillés
+                        strokeWidth: 2,
+                        dashPattern: [15, 10], // Longueur des pointillés et de l'espace
+                        borderType: BorderType.RRect,
+                        radius: Radius.circular(100),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.add, color: Color(0xFF808080)),
+                              SizedBox(width: 8),
+                              Text(
+                                'Ajouter un endroit de travail',
+                                style: TextStyle(color: Color(0xFF808080), fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                  ],
                 ),
-                height: 40,
-                width: width / 3,
               ),
               SizedBox(height: height / 40),
               SizedBox(
