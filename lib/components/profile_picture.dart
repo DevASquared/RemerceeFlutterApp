@@ -17,25 +17,23 @@ class ProfilePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(500),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.height * 0.14,
-          height: MediaQuery.of(context).size.height * 0.14,
-          child: Builder(builder: (context) {
-            if (user == "") {
-              return Container(
-                decoration: const BoxDecoration(color: Color(0xFF4D4D4D)),
-                child: Icon(
-                  Icons.broken_image,
-                  color: Colors.white,
-                  size: MediaQuery.of(context).size.height * 0.04,
-                ),
-              );
-            } else {
-              return Hero(
-                tag: "profile_pic",
-                child: Material(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.height * 0.14,
+        height: MediaQuery.of(context).size.height * 0.14,
+        child: Builder(builder: (context) {
+          // return Material(
+          //   child: InkWell(
+          //     borderRadius: BorderRadius.circular(500),
+          //     onTap: () => Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => EditPage(user: user),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          return (user.imageUrl == "")
+              ? Material(
                   child: InkWell(
                     borderRadius: BorderRadius.circular(500),
                     onTap: () => Navigator.push(
@@ -44,84 +42,120 @@ class ProfilePicture extends StatelessWidget {
                         builder: (context) => EditPage(user: user),
                       ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(500),
-                      child: Image.network(
-                        user.imageUrl,
-                        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                          return const Center(child: CircularProgressIndicator());
-                        },
-                        fit: BoxFit.cover,
-                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-                                    : null,
-                              ),
-                            );
-                          }
-                        },
+                    child: Container(
+                      decoration: const BoxDecoration(color: Color(0xFF4D4D4D)),
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: MediaQuery.of(context).size.height * 0.04,
                       ),
                     ),
                   ),
-                ),
-              );
-              return Container();
-            }
-            // ? widget.public
-            //     ? Container()
-            //     : const Icon(Icons.edit)
-            // : widget.public
-            //     ? Image.network(
-            //         imageUrl,
-            //         errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-            //           return const Icon(Icons.broken_image);
-            //         },
-            //         fit: BoxFit.cover,
-            //         width: MediaQuery.of(context).size.height * 0.15,
-            //         height: MediaQuery.of(context).size.height * 0.15,
-            //         loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-            //           if (loadingProgress == null) {
-            //             return child;
-            //           } else {
-            //             return Center(
-            //               child: CircularProgressIndicator(
-            //                 value: loadingProgress.expectedTotalBytes != null
-            //                     ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-            //                     : null,
-            //               ),
-            //             );
-            //           }
-            //         },
-            //       )
-            //     : Image.network(
-            //         imageUrl,
-            //         errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-            //           return const Icon(Icons.broken_image);
-            //         },
-            //         fit: BoxFit.cover,
-            //         width: MediaQuery.of(context).size.height * 0.15,
-            //         height: MediaQuery.of(context).size.height * 0.15,
-            //         loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-            //           if (loadingProgress == null) {
-            //             return child;
-            //           } else {
-            //             return Center(
-            //               child: CircularProgressIndicator(
-            //                 value: loadingProgress.expectedTotalBytes != null
-            //                     ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-            //                     : null,
-            //               ),
-            //             );
-            //           }
-            //         },
-            //       );
-          }),
-        ),
+                )
+              : Stack(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.height * 0.035,
+                      height: MediaQuery.of(context).size.height * 0.035,
+                      child: Material(
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(500),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditPage(user: user),
+                            ),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF4D4D4D),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(500),
+                      child: Hero(
+                        tag: "profile_pic",
+                        child: Image.network(
+                          user.imageUrl,
+                          headers: const {"Access-Control-Allow-Origin": "*"},
+                          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                            return const Center(child: CircularProgressIndicator());
+                          },
+                          fit: BoxFit.cover,
+                          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            } else {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+          // ? widget.public
+          //     ? Container()
+          //     : const Icon(Icons.edit)
+          // : widget.public
+          //     ? Image.network(
+          //         imageUrl,
+          //         errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+          //           return const Icon(Icons.broken_image);
+          //         },
+          //         fit: BoxFit.cover,
+          //         width: MediaQuery.of(context).size.height * 0.15,
+          //         height: MediaQuery.of(context).size.height * 0.15,
+          //         loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+          //           if (loadingProgress == null) {
+          //             return child;
+          //           } else {
+          //             return Center(
+          //               child: CircularProgressIndicator(
+          //                 value: loadingProgress.expectedTotalBytes != null
+          //                     ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+          //                     : null,
+          //               ),
+          //             );
+          //           }
+          //         },
+          //       )
+          //     : Image.network(
+          //         imageUrl,
+          //         errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+          //           return const Icon(Icons.broken_image);
+          //         },
+          //         fit: BoxFit.cover,
+          //         width: MediaQuery.of(context).size.height * 0.15,
+          //         height: MediaQuery.of(context).size.height * 0.15,
+          //         loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+          //           if (loadingProgress == null) {
+          //             return child;
+          //           } else {
+          //             return Center(
+          //               child: CircularProgressIndicator(
+          //                 value: loadingProgress.expectedTotalBytes != null
+          //                     ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+          //                     : null,
+          //               ),
+          //             );
+          //           }
+          //         },
+          //       );
+        }),
       ),
     );
   }
