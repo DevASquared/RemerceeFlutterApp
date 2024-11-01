@@ -4,7 +4,7 @@ import 'note_model.dart';
 
 class User {
   String imageUrl;
-  List<dynamic> places;
+  List<dynamic> workPlaces;
   List<Note> notes;
   final String email;
   final String username;
@@ -12,7 +12,7 @@ class User {
 
   User({
     this.imageUrl = "",
-    this.places = const [],
+    this.workPlaces = const [],
     required List<dynamic> dynamicNotes,
     required this.email,
     required this.username,

@@ -36,7 +36,7 @@ class _UserProfileState extends State<UserProfile> {
         this.user = user;
         this.name = user.username.toString();
         this.imageUrl = user.imageUrl.toString();
-        this.role = user.places;
+        this.role = user.workPlaces;
         this.since = user.since.year.toString();
       });
     }

@@ -26,7 +26,7 @@ class ApiController {
         email: user["email"],
         username: user["username"],
         imageUrl: user["imageUrl"] ?? "",
-        places: user["role"] ?? [],
+        workPlaces: user["role"] ?? [],
         dynamicNotes: user["notes"] ?? [],
         since: DateTime.fromMillisecondsSinceEpoch(int.parse(user["since"].toString())),
       );

@@ -12,9 +12,8 @@ import '../models/user_model.dart';
 
 class EditPage extends StatefulWidget {
   final User user;
-  final List<String> workPlaces;
 
-  const EditPage({Key? key, required this.user, required this.workPlaces}) : super(key: key);
+  const EditPage({Key? key, required this.user}) : super(key: key);
 
   @override
   State<EditPage> createState() => _EditPageState();
@@ -23,10 +22,17 @@ class EditPage extends StatefulWidget {
 class _EditPageState extends State<EditPage> {
   var controller = TextEditingController(text: "test");
   String? imageUrl;
+  late final List<String> workPlaces;
+
+  @override
+  void initState() {
+    super.initState();
+    workPlaces = widget.user.workPlaces.map((e) => e.toString()).toList();
+  }
 
   void addWorkPlace(String newWorkPlace) {
     setState(() {
-      widget. workPlaces.add(newWorkPlace);
+      workPlaces.add(newWorkPlace);
     });
   }
 
@@ -163,15 +169,15 @@ class _EditPageState extends State<EditPage> {
                         ),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: widget.workPlaces.length,
+                          itemCount: workPlaces.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              title: Text(widget.workPlaces[index], textAlign: TextAlign.center,),
+                              title: Text(workPlaces[index], textAlign: TextAlign.center,),
                               trailing: IconButton(
                                 icon: Icon(Icons.close, color: Colors.red),
                                 onPressed: () {
                                   setState(() {
-                                    widget.workPlaces.removeAt(index); // Supprime l'élément
+                                    workPlaces.removeAt(index); // Supprime l'élément
                                   });
                                 },
                               ),

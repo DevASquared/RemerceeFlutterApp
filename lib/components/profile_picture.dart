@@ -86,7 +86,7 @@ class ProfilePicture extends StatelessWidget {
                         tag: "profile_pic",
                         child: Image.network(
                           user.imageUrl,
-                          headers: const {"Access-Control-Allow-Origin": "*"},
+                          headers: const {"Access-Control-Allow-Origin": "*", "Content-Type": "multipart/form-data"},
                           errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                             return const Center(child: CircularProgressIndicator());
                           },

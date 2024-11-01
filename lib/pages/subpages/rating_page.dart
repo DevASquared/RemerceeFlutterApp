@@ -49,7 +49,7 @@ class _RatingPageState extends State<RatingPage> {
           if (user.username != "L'utilisateur n'existe pas") {
             setState(() {
               userName = user.username;
-              userPlace = user.places;
+              userPlace = user.workPlaces;
               userImageUrl = user.imageUrl;
               userSince = user.since.year.toString();
               userprofile = UserProfile(
