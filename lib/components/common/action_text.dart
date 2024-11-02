@@ -6,10 +6,12 @@ class ActionText extends StatelessWidget {
 
   final bool? primary;
 
+  final void Function() onTap;
+
   const ActionText({
     super.key,
     required this.text,
-    this.primary,
+    this.primary, required this. onTap,
   });
 
   @override
@@ -19,7 +21,9 @@ class ActionText extends StatelessWidget {
       borderRadius: BorderRadius.circular(9),
       child: InkWell(
         borderRadius: BorderRadius.circular(9),
-        onTap: () {},
+        onTap: () {
+          onTap();
+        },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
           child: Text(

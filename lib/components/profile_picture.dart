@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:remercee/components/user_profile.dart';
 import 'package:remercee/pages/edit_page.dart';
+import 'package:remercee/utils/api_controller.dart';
+import 'package:remercee/utils/constants.dart';
 
 import '../models/user_model.dart';
 
@@ -54,39 +58,12 @@ class ProfilePicture extends StatelessWidget {
                 )
               : Stack(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.height * 0.035,
-                      height: MediaQuery.of(context).size.height * 0.035,
-                      child: Material(
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(500),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditPage(user: user),
-                            ),
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF4D4D4D),
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                              size: MediaQuery.of(context).size.height * 0.02,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(500),
-                      child: Hero(
-                        tag: "profile_pic",
+                    Hero(
+                      tag: "profile_pic",
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(500),
                         child: Image.network(
-                          user.imageUrl,
-                          headers: const {"Access-Control-Allow-Origin": "*", "Content-Type": "multipart/form-data"},
+                          "${ApiController.url}user/image/${user.imageUrl}",
                           errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                             return const Center(child: CircularProgressIndicator());
                           },
@@ -102,6 +79,35 @@ class ProfilePicture extends StatelessWidget {
                               );
                             }
                           },
+                        ),
+                      ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(500),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.height * 0.035,
+                        height: MediaQuery.of(context).size.height * 0.035,
+                        child: Material(
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(500),
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditPage(user: user),
+                              ),
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF4D4D4D),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: MediaQuery.of(context).size.height * 0.02,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),

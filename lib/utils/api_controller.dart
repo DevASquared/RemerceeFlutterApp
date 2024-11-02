@@ -80,4 +80,17 @@ class ApiController {
       }
     }
   }
+
+  static Future<void> setInfo(User user) async {
+    var result = await http.post(
+      Uri.parse("${ApiController.url}user"),
+      body: {
+        "username": user.username,
+        "updates": {
+        }
+      },
+    );
+    log(result.body);
+    log({"role": user.workPlaces.toList().toString()}.toString());
+  }
 }
