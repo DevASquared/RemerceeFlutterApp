@@ -9,8 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'constants.dart';
 
 class ApiController {
-  static const String url = "https://api-cnw6qzk6uq-uc.a.run.app/";
-  // static const String url = "http://localhost:1234/";
+  // static const String url = "https://api-cnw6qzk6uq-uc.a.run.app/";
+  static const String url = "http://localhost:1234/";
 
   static Future<User> getUserProfileFromUsername(username) async {
     var sharedPreferences = await SharedPreferences.getInstance();
@@ -82,15 +82,24 @@ class ApiController {
   }
 
   static Future<void> setInfo(User user) async {
+    log("Username : ${user.username}");
+    log("Username : ${user.workPlaces.toString()}");
+
+    var reqBody = jsonEncode({
+      "username": user.username,
+      "updates": {
+        "role": user.workPlaces.toList(),
+      },
+    });
+
+    log(reqBody.toString());
+
     var result = await http.post(
       Uri.parse("${ApiController.url}user"),
-      body: {
-        "username": user.username,
-        "updates": {
-        }
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: reqBody,
     );
-    log(result.body);
-    log({"role": user.workPlaces.toList().toString()}.toString());
   }
 }

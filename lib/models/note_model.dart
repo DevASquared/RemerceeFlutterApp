@@ -16,4 +16,12 @@ class Note {
       timestamp: DateTime.fromMillisecondsSinceEpoch(data['timestamp']),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'rate': rate,
+      'judge': judge,
+      'timestamp': timestamp.millisecondsSinceEpoch,
+    };
+  }
 }

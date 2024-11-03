@@ -48,6 +48,7 @@ class _RatingsDataState extends State<RatingsData> {
             int i = 0;
             for (double note in user.getNotesSumLast12Months()) {
               if (note != 0) {
+                note = double.parse(note.toStringAsFixed(2));
                 setState(() {
                   if (user.getNotesSumLast12Months()[i - 1] == 0) {
                     spots.add(FlSpot((i - 3).toDouble(), 0));
@@ -67,7 +68,7 @@ class _RatingsDataState extends State<RatingsData> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
+    log(spots.toString());
     return spots.isEmpty
         ? Container()
         : Column(
@@ -91,7 +92,7 @@ class _RatingsDataState extends State<RatingsData> {
                     ),
                     SizedBox(height: width * 0.01),
                     Text(
-                      averageRate.toString(),
+                      double.parse(averageRate.toStringAsFixed(2)).toString(),
                       style: TextStyle(
                         fontSize: width * 0.1,
                         fontWeight: FontWeight.bold,

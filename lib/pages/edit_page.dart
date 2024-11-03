@@ -29,15 +29,16 @@ class _EditPageState extends State<EditPage> {
   @override
   void initState() {
     super.initState();
-    workPlaces = widget.user.workPlaces.map((e) => e.toString()).toList();
-    imageUrl = widget.user.imageUrl;
-    tempUser = widget.user;
+    tempUser = widget.user.copyWith();
+    imageUrl = tempUser.imageUrl;
+    workPlaces = tempUser.workPlaces.map((e) => e.toString()).toList();
   }
 
   void addWorkPlace(String newWorkPlace) {
     setState(() {
-      tempUser.workPlaces.add(newWorkPlace);
+      workPlaces.add(newWorkPlace);
     });
+    log(widget.user.workPlaces.toString());
   }
 
   Future<void> uploadImage() async {
@@ -68,12 +69,10 @@ class _EditPageState extends State<EditPage> {
   }
 
   void saveChanges() async {
-    // Appel de l'upload de l'image si elle est modifiée
+    tempUser.workPlaces = workPlaces;
     await uploadImage();
-    // Ajoutez ici la logique pour sauvegarder les autres modifications de l’utilisateur
-    // ApiController.setInfo(tempUser);
-    log(tempUser.toString());
-    log(widget.user.toString());
+    log(tempUser.workPlaces.toString());
+    ApiController.setInfo(tempUser);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Modifications enregistrées avec succès')),
     );
@@ -121,7 +120,12 @@ class _EditPageState extends State<EditPage> {
                       tag: "profile_pic",
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(500),
-                        child: Image.network(
+                        child: newImage != null
+                            ? Image.memory(
+                          newImage!,
+                          fit: BoxFit.cover,
+                        )
+                            : Image.network(
                           "${ApiController.url}user/image/${widget.user.imageUrl}",
                           errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                             return const Center(child: CircularProgressIndicator());
@@ -196,6 +200,7 @@ class _EditPageState extends State<EditPage> {
                             onPressed: () {
                               setState(() {
                                 workPlaces.removeAt(index);
+                                tempUser.workPlaces = workPlaces;
                               });
                             },
                           ),
