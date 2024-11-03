@@ -9,8 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'constants.dart';
 
 class ApiController {
-  // static const String url = "https://api-cnw6qzk6uq-uc.a.run.app/";
-  static const String url = "http://localhost:1234/";
+  static const String url = "https://api-cnw6qzk6uq-uc.a.run.app/";
+  // static const String url = "http://localhost:1234/";
 
   static Future<User> getUserProfileFromUsername(username) async {
     var sharedPreferences = await SharedPreferences.getInstance();
