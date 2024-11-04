@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class Note {
   final double rate;
   final String judge;
@@ -10,8 +12,9 @@ class Note {
   });
 
   factory Note.fromMap(Map<String, dynamic> data) {
+    log("Data : ${data.toString()}");
     return Note(
-      rate: data['rate'].toDouble(),
+      rate: double.parse(data['rate'].toString()),
       judge: data['judge'],
       timestamp: DateTime.fromMillisecondsSinceEpoch(data['timestamp']),
     );

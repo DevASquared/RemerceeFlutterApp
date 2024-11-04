@@ -163,7 +163,7 @@ class _RatingPageState extends State<RatingPage> {
                   height: MediaQuery.of(context).size.height * 0.065, // Prend toute la largeur
                   child: ElevatedButton(
                     onPressed: () {
-                      ApiController.rateUser(userName, rate.toString());
+                      ApiController.rateUser(userName, rate);
                       widget.closePage();
                     },
                     style: ElevatedButton.styleFrom(
