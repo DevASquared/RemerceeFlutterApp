@@ -25,17 +25,6 @@ class ProfilePicture extends StatelessWidget {
         width: MediaQuery.of(context).size.height * 0.14,
         height: MediaQuery.of(context).size.height * 0.14,
         child: Builder(builder: (context) {
-          // return Material(
-          //   child: InkWell(
-          //     borderRadius: BorderRadius.circular(500),
-          //     onTap: () => Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => EditPage(user: user),
-          //       ),
-          //     ),
-          //   ),
-          // ),
           return (user.imageUrl == "")
               ? Material(
                   child: InkWell(
@@ -47,7 +36,10 @@ class ProfilePicture extends StatelessWidget {
                       ),
                     ),
                     child: Container(
-                      decoration: const BoxDecoration(color: Color(0xFF4D4D4D)),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF4D4D4D),
+                        borderRadius: BorderRadius.circular(500),
+                      ),
                       child: Icon(
                         Icons.edit,
                         color: Colors.white,
