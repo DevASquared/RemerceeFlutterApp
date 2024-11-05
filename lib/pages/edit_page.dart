@@ -32,6 +32,7 @@ class _EditPageState extends State<EditPage> {
     tempUser = widget.user.copyWith();
     imageUrl = tempUser.imageUrl;
     workPlaces = tempUser.workPlaces.map((e) => e.toString()).toList();
+    if(workPlaces.contains("")) workPlaces.remove("");
   }
 
   void addWorkPlace(String newWorkPlace) {
