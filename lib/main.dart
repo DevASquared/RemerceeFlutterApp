@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:remercee/pages/edit_page.dart';
 import 'package:remercee/pages/home_page.dart';
+import 'package:remercee/pages/subpages/rating_page.dart';
 
 import 'models/user_model.dart';
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       //         imageUrl: "https://firebasestorage.googleapis.com/v0/b/remercee-project.appspot.com/o/Antonin.jpg?alt=media",
       //         workPlaces: [""], dynamicNotes: []),),
       home: const HomePage(),
+      // home: RatingPage(username: 'Antonin', onerror: () {  }, closePage: () {  },)
     );
   }
 }
