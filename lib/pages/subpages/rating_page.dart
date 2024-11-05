@@ -162,10 +162,33 @@ class _RatingPageState extends State<RatingPage> {
                   width: MediaQuery.of(context).size.width * 0.75,
                   height: MediaQuery.of(context).size.height * 0.065, // Prend toute la largeur
                   child: ElevatedButton(
-                    onPressed: () {
-                      ApiController.rateUser(userName, rate);
-                      widget.closePage();
+                    onPressed: () async {
+                      bool canRate = await ApiController.rateUser(userName, rate);
+                      if (canRate) {
+                        widget.closePage();
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Erreur"),
+                              content: Text("Vous ne pouvez voter pour la même personne qu'une fois toutes les 16 heures"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    widget.closePage();
+                                  },
+                                  child: Text("OK"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+
+                      }
                     },
+
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.red,
                     ),
