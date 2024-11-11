@@ -102,4 +102,31 @@ class ApiController {
       body: reqBody,
     );
   }
+
+  static Future<void> banUser(User user) async {
+    var reqBody = jsonEncode({
+      "username": user.username,
+      "updates": {
+        /*
+         * ban: {
+         *   count: 1, // nombre de fois bannis
+         *   unban: timestamp, // date de fin de ban et temps de ban = 7 x (ban count) (si il est pas encore deban tu ajoute le temps du ban)
+         *   [
+         *     suspectServer: username // Nom du username
+         *   ]
+         * }
+         */
+      },
+    });
+
+    log(reqBody.toString());
+
+    var result = await http.post(
+      Uri.parse("${ApiController.url}user"),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: reqBody,
+    );
+  }
 }
