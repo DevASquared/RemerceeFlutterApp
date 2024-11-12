@@ -37,18 +37,35 @@ class ApiController {
 
   static Future<bool> rateUser(username, rate) async {
     var sharedPreferences = await SharedPreferences.getInstance();
-    var judge = sharedPreferences.getString("username");
+    var judge = sharedPreferences.getString("username") ?? "";
+    var userRated = await getUserProfileFromUsername(username);
+    var userRatedNotes = userRated.notes;
+    var canVote = true;
 
-    var result = await http.post(
-      Uri.parse("${url}user/rate"),
-      body: {
-        "username": username.toString(),
-        "rate": rate.toString(),
-        "judge": judge.toString(),
-      },
-    );
-    var jsonResult = json.decode(result.body.toString());
-    return bool.parse(jsonResult["success"].toString());
+    for (var note in userRatedNotes) {
+      if (note.judge.trim() == judge.trim()) {
+        var timestamp = note.timestamp;
+        var now = DateTime.now();
+        var difference = now.difference(timestamp).inHours;
+        if (difference < 16) {
+          canVote = false;
+        }
+      }
+    }
+
+    if (canVote) {
+      var result = await http.post(
+        Uri.parse("${url}user/rate"),
+        body: {
+          "username": username.toString(),
+          "rate": rate.toString(),
+          "judge": judge.toString(),
+        },
+      );
+      var jsonResult = json.decode(result.body.toString());
+      return bool.parse(jsonResult["success"].toString());
+    }
+    return false;
   }
 
   static Future<void> login(widget, formKey, username, password) async {
